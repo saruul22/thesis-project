@@ -1,0 +1,44 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+<form method="post">
+    {% csrf_token %}
+    <div class="module">
+        <h2>Reassign Weapons</h2>
+        <p>Select the new personnel for each weapon:</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Weapon</th>
+                    <th>Currently Assigned To</th>
+                    <th>New Personnel</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for weapon in queryset %}
+                <tr>
+                    <td>{{ weapon }}</td>
+                    <td>{{ weapon.assigned_to|default:"-" }}</td>
+                    <td>
+                        <select name="personnel">
+                            <option value="">-- Select Personnel --</option>
+                            {% for person in personnel_list %}
+                            <option value="{{ person.id }}">{{ person }}</option>
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+                {% for hidden in admin_form.hidden_fields %}{{ hidden }}{% endfor %}
+                <input type="hidden" name="action" value="reassign_weapons">
+                <input type="hidden" name="{{ action_checkbox_name }}" value="{{ weapon.pk }}">
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="submit-row">
+        <input type="submit" name="apply" value="Reassign Weapons">
+    </div>
+</form>
+{% endblock %}

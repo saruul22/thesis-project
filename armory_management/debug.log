@@ -1,0 +1,812 @@
+Watching for file changes with StatReloader
+Internal Server Error: /
+Traceback (most recent call last):
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/module_loading.py", line 16, in cached_import
+    return getattr(module, class_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'django.contrib.sessions.serializers' has no attribute 'PickleSerializer'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/contrib/sessions/middleware.py", line 20, in process_request
+    request.session = self.SessionStore(session_key)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/contrib/sessions/backends/file.py", line 26, in __init__
+    super().__init__(session_key)
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/contrib/sessions/backends/base.py", line 49, in __init__
+    self.serializer = import_string(settings.SESSION_SERIALIZER)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/module_loading.py", line 32, in import_string
+    raise ImportError(
+ImportError: Module "django.contrib.sessions.serializers" does not define a "PickleSerializer" attribute/class
+"GET / HTTP/1.1" 500 95471
+Internal Server Error: /favicon.ico
+Traceback (most recent call last):
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/module_loading.py", line 30, in import_string
+    return cached_import(module_path, class_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/module_loading.py", line 16, in cached_import
+    return getattr(module, class_name)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'django.contrib.sessions.serializers' has no attribute 'PickleSerializer'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/deprecation.py", line 119, in __call__
+    response = self.process_request(request)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/contrib/sessions/middleware.py", line 20, in process_request
+    request.session = self.SessionStore(session_key)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/contrib/sessions/backends/file.py", line 26, in __init__
+    super().__init__(session_key)
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/contrib/sessions/backends/base.py", line 49, in __init__
+    self.serializer = import_string(settings.SESSION_SERIALIZER)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/module_loading.py", line 32, in import_string
+    raise ImportError(
+ImportError: Module "django.contrib.sessions.serializers" does not define a "PickleSerializer" attribute/class
+"GET /favicon.ico HTTP/1.1" 500 95808
+/home/saruul/thesis_project/armory_management/armory_management/settings.py changed, reloading.
+Watching for file changes with StatReloader
+Not Found: /
+"GET / HTTP/1.1" 404 2507
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 2558
+/home/saruul/thesis_project/armory_management/armory_management/urls.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/armory_management/urls.py changed, reloading.
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 4196
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+"GET /static/admin/css/login.css HTTP/1.1" 200 951
+"GET /static/admin/css/base.css HTTP/1.1" 200 22154
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+"GET /static/admin/css/responsive.css HTTP/1.1" 200 16632
+"GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 9903
+"GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+"GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 11689
+"GET /static/admin/css/changelists.css HTTP/1.1" 200 6878
+"GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+"GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+"GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+"GET /static/admin/js/core.js HTTP/1.1" 200 6208
+"GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+"GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+"GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+"GET /static/admin/img/search.svg HTTP/1.1" 200 458
+"GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/filters.js HTTP/1.1" 200 978
+"GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+"GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+"GET /admin/inventory/weapon/add/ HTTP/1.1" 200 18008
+"GET /static/admin/css/forms.css HTTP/1.1" 200 8525
+"GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+"GET /static/admin/js/calendar.js HTTP/1.1" 200 9141
+"GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19319
+"GET /static/admin/css/widgets.css HTTP/1.1" 200 11991
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+"GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+"GET /static/admin/img/icon-calendar.svg HTTP/1.1" 200 1086
+"POST /admin/inventory/weapon/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 14200
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+"GET /admin/inventory/weapon/1/change/ HTTP/1.1" 200 18353
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 11705
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/add/ HTTP/1.1" 200 14526
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/personnel/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 15407
+"GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+"GET /admin/face_authentication/faceregistrationlog/ HTTP/1.1" 200 12330
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 12432
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 12432
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 13983
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/1/change/ HTTP/1.1" 200 18413
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/weapon/1/change/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 14229
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Internal Server Error: /admin/inventory/weapon/
+Traceback (most recent call last):
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/views/decorators/cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/contrib/admin/sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 2057, in changelist_view
+    response = self.response_action(
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1686, in response_action
+    response = func(self, request, queryset)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis_project/armory_management/inventory/admin.py", line 122, in generate_qr_code
+    img.save(f"media/{img_path}")
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/qrcode/image/pil.py", line 54, in save
+    self._img.save(stream, format=format, **kwargs)
+  File "/home/saruul/thesis_project/.venv/lib/python3.12/site-packages/PIL/Image.py", line 2591, in save
+    fp = builtins.open(filename, "w+b")
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'media/weapon_qr_codes/000001.png'
+"POST /admin/inventory/weapon/ HTTP/1.1" 500 140465
+/home/saruul/thesis_project/armory_management/inventory/admin.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/admin.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 14010
+"POST /admin/inventory/weapon/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 14146
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 4196
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+"GET /static/admin/css/base.css HTTP/1.1" 304 0
+"GET /static/admin/css/login.css HTTP/1.1" 304 0
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+"GET /static/admin/js/theme.js HTTP/1.1" 304 0
+"GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 2701
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 11043
+"GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+"GET /admin/face_authentication/faceregistrationlog/ HTTP/1.1" 200 12330
+"GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+"GET /static/admin/js/core.js HTTP/1.1" 304 0
+"GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+"GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+"GET /static/admin/js/actions.js HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+"GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+"GET /static/admin/img/search.svg HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/filters.js HTTP/1.1" 304 0
+"GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 304 0
+"GET /admin/face_authentication/faceregistrationlog/add/ HTTP/1.1" 200 13544
+"GET /static/admin/css/forms.css HTTP/1.1" 304 0
+"GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+"GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+"GET /admin/face_authentication/faceregistrationlog/ HTTP/1.1" 200 12330
+"GET /admin/face_authentication/faceregistrationlog/add/ HTTP/1.1" 200 13544
+"GET /admin/face_authentication/faceregistrationlog/ HTTP/1.1" 200 12330
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 15177
+"GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/sorting-icons.svg HTTP/1.1" 304 0
+"GET /admin/inventory/personnel/1/change/ HTTP/1.1" 200 14883
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/1/register-face/ HTTP/1.1" 200 6189
+"GET /admin/inventory/personnel/1/register-face/ HTTP/1.1" 200 6189
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"GET /admin/inventory/personnel/1/register-face/ HTTP/1.1" 200 6189
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+"POST /admin/inventory/personnel/api/capture-face/ HTTP/1.1" 200 60
+/home/saruul/thesis_project/armory_management/inventory/admin.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/face_authentication/models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 4196
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2808
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+"GET /static/admin/js/theme.js HTTP/1.1" 200 1653
+"GET /static/admin/css/login.css HTTP/1.1" 200 951
+"GET /static/admin/css/responsive.css HTTP/1.1" 200 16632
+"GET /static/admin/css/base.css HTTP/1.1" 200 22154
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 2701
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 9903
+"GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+"GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 12023
+"GET /static/admin/css/changelists.css HTTP/1.1" 200 6878
+"GET /static/admin/img/search.svg HTTP/1.1" 200 458
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/filters.js HTTP/1.1" 200 978
+"GET /static/admin/img/tooltag-add.svg HTTP/1.1" 200 331
+"GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 200 581
+"GET /admin/inventory/weapon/add/ HTTP/1.1" 200 18969
+"GET /static/admin/css/forms.css HTTP/1.1" 200 8525
+"GET /static/admin/js/calendar.js HTTP/1.1" 200 9141
+"GET /static/admin/css/widgets.css HTTP/1.1" 200 11991
+"GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19319
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 200 392
+"GET /static/admin/img/icon-calendar.svg HTTP/1.1" 200 1086
+"POST /admin/inventory/weapon/add/ HTTP/1.1" 200 19260
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"POST /admin/inventory/weapon/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 15161
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/icon-yes.svg HTTP/1.1" 200 436
+"GET /admin/inventory/weapon/1/change/ HTTP/1.1" 200 19251
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 14951
+"GET /admin/inventory/weapon/?o=4 HTTP/1.1" 200 15365
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/sorting-icons.svg HTTP/1.1" 200 1097
+"GET /admin/inventory/weapon/?o=-4 HTTP/1.1" 200 15382
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/?o= HTTP/1.1" 200 15113
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/1/change/?_changelist_filters=o%3D HTTP/1.1" 200 19336
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Watching for file changes with StatReloader
+"GET /admin/inventory/weapon/1/change/?_changelist_filters=o%3D HTTP/1.1" 200 19336
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/ HTTP/1.1" 200 10292
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 14654
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/1/change/ HTTP/1.1" 200 19251
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 14654
+"GET /admin/inventory/weapon/1/change/ HTTP/1.1" 200 19251
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+/home/saruul/thesis_project/armory_management/inventory/admin.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/admin.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/admin.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/admin.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /admin/inventory/weapon/1/change/ HTTP/1.1" 200 19161
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/weapon/1/change/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 14866
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/1/change/ HTTP/1.1" 200 19161
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+/home/saruul/thesis_project/armory_management/inventory/admin.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /admin/inventory/weapon/1/change/ HTTP/1.1" 200 19661
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/weapon/1/change/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 14866
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 14654
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/add/ HTTP/1.1" 200 18887
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/weapon/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 15812
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/2/change/ HTTP/1.1" 200 19657
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 15602
+"GET /admin/inventory/weapon/add/ HTTP/1.1" 200 18887
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/weapon/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 16767
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 16557
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/2/change/ HTTP/1.1" 200 19657
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/weapon/2/change/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/2/change/ HTTP/1.1" 200 19898
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/2/change/ HTTP/1.1" 200 19657
+"GET /admin/inventory/weapon/2/delete/ HTTP/1.1" 200 10339
+"GET /static/admin/js/cancel.js HTTP/1.1" 200 884
+"POST /admin/inventory/weapon/2/delete/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 15774
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/add/ HTTP/1.1" 200 18887
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/weapon/add/ HTTP/1.1" 200 19188
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/weapon/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 16983
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+/home/saruul/thesis_project/armory_management/face_authentication/face_utils.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/face_authentication/admin.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 4196
+"GET /static/admin/css/base.css HTTP/1.1" 304 0
+"GET /static/admin/js/theme.js HTTP/1.1" 304 0
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+"GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+"GET /static/admin/css/login.css HTTP/1.1" 304 0
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 2701
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 12756
+"GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+"GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+"GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 16773
+"GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+"GET /static/admin/js/core.js HTTP/1.1" 304 0
+"GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+"GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+"GET /static/admin/js/actions.js HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+"GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/search.svg HTTP/1.1" 304 0
+"GET /static/admin/js/filters.js HTTP/1.1" 304 0
+"GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 304 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 16773
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/1/change/ HTTP/1.1" 200 19661
+"GET /static/admin/css/forms.css HTTP/1.1" 304 0
+"GET /static/admin/js/calendar.js HTTP/1.1" 304 0
+"GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+"GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+"GET /static/admin/img/icon-calendar.svg HTTP/1.1" 304 0
+"GET /admin/inventory/weapon/1/delete/ HTTP/1.1" 200 10339
+"GET /static/admin/js/cancel.js HTTP/1.1" 200 884
+"POST /admin/inventory/weapon/1/delete/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 15986
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 4196
+"GET /static/admin/css/base.css HTTP/1.1" 304 0
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+"GET /static/admin/css/login.css HTTP/1.1" 304 0
+"GET /static/admin/js/theme.js HTTP/1.1" 304 0
+"GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 2701
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 13069
+"GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+"GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 304 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 15822
+"GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+"GET /static/admin/js/core.js HTTP/1.1" 304 0
+"GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+"GET /static/admin/js/actions.js HTTP/1.1" 304 0
+"GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+"GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/search.svg HTTP/1.1" 304 0
+"GET /static/admin/js/filters.js HTTP/1.1" 304 0
+"GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 304 0
+"GET /admin/inventory/weapon/add/ HTTP/1.1" 200 18887
+"GET /static/admin/css/forms.css HTTP/1.1" 304 0
+"GET /static/admin/js/calendar.js HTTP/1.1" 304 0
+"GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+"GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+"GET /static/admin/img/icon-calendar.svg HTTP/1.1" 304 0
+"POST /admin/inventory/weapon/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 17207
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+"GET /admin/inventory/weapon/5/change/ HTTP/1.1" 200 19885
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/weapon/5/change/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 17209
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 11960
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/add/ HTTP/1.1" 200 14919
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/personnel/add/ HTTP/1.1" 200 15190
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/faceregistrationlog/ HTTP/1.1" 200 12330
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 12432
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/faceregistrationlog/ HTTP/1.1" 200 12330
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 12432
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/weapontransaction/add/ HTTP/1.1" 200 18230
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/icon-clock.svg HTTP/1.1" 200 677
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 12432
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 11960
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 16997
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/faceregistrationlog/ HTTP/1.1" 200 12330
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 12432
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/faceregistrationlog/ HTTP/1.1" 200 12330
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/ HTTP/1.1" 200 13430
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 16997
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 11960
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 16997
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 11960
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 4196
+"GET /static/admin/css/base.css HTTP/1.1" 304 0
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+"GET /static/admin/css/login.css HTTP/1.1" 304 0
+"GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+"GET /static/admin/js/theme.js HTTP/1.1" 304 0
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 2701
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 13430
+"GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 304 0
+Watching for file changes with StatReloader
+Not Found: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 404 2716
+"GET / HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 4196
+"GET /static/admin/css/base.css HTTP/1.1" 304 0
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+"GET /static/admin/css/login.css HTTP/1.1" 304 0
+"GET /static/admin/js/theme.js HTTP/1.1" 304 0
+"GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 2701
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 13430
+"GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 11960
+"GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+"GET /static/admin/js/core.js HTTP/1.1" 200 6208
+"GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+"GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+"GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9777
+"GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+"GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+"GET /static/admin/img/search.svg HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+"GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/filters.js HTTP/1.1" 304 0
+"GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+"GET /admin/inventory/personnel/add/ HTTP/1.1" 200 14919
+"GET /static/admin/css/forms.css HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+"GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+"POST /admin/inventory/personnel/add/ HTTP/1.1" 200 15191
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+/home/saruul/thesis_project/armory_management/inventory/admin.py changed, reloading.
+Watching for file changes with StatReloader
+"POST /admin/inventory/personnel/add/ HTTP/1.1" 200 15191
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 14053
+"GET /admin/inventory/regiment/add/ HTTP/1.1" 200 12556
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/regiment/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/regiment/ HTTP/1.1" 200 12870
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 12402
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/add/ HTTP/1.1" 200 16704
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/personnel/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 16024
+"GET /static/admin/img/icon-no.svg HTTP/1.1" 200 560
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/sorting-icons.svg HTTP/1.1" 304 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 17439
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/5/change/ HTTP/1.1" 200 20385
+"GET /static/admin/js/calendar.js HTTP/1.1" 304 0
+"GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/icon-calendar.svg HTTP/1.1" 304 0
+"POST /admin/inventory/weapon/5/change/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 17676
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 15796
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Not Found: /api/face/register/
+"POST /api/face/register/ HTTP/1.1" 404 2723
+Not Found: /api/face/register/
+"POST /api/face/register/ HTTP/1.1" 404 2723
+Not Found: /api/face/register/
+"POST /api/face/register/ HTTP/1.1" 404 2723
+/home/saruul/thesis_project/armory_management/armory_management/urls.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/face_authentication/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/face_authentication/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/face_authentication/models.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/face_authentication/views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Not Found: /api/face/register/
+"POST /api/face/register/ HTTP/1.1" 404 3836
+Not Found: /api/face/register/
+"POST /api/face/register/ HTTP/1.1" 404 3836
+/home/saruul/thesis_project/armory_management/armory_management/urls.py changed, reloading.
+Watching for file changes with StatReloader
+Unauthorized: /api/face/register/
+"POST /api/face/register/ HTTP/1.1" 401 58
+Watching for file changes with StatReloader
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+Embedding extraction error: HTTPSConnectionPool(host='localhost', port=5000): Max retries exceeded with url: /api/extract_embeddings (Caused by SSLError(SSLError(1, '[SSL: WRONG_VERSION_NUMBER] wrong version number (_ssl.c:1000)')))
+Bad Request: /api/face/register/
+"POST /api/face/register/ HTTP/1.1" 400 216
+/home/saruul/thesis_project/armory_management/armory_management/settings.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/armory_management/settings.py changed, reloading.
+Watching for file changes with StatReloader
+"POST /api/face/register/ HTTP/1.1" 200 125
+/home/saruul/thesis_project/armory_management/face_authentication/views.py changed, reloading.
+Watching for file changes with StatReloader
+/home/saruul/thesis_project/armory_management/face_authentication/views.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/verify/ HTTP/1.1" 200 67
+"POST /api/face/verify/ HTTP/1.1" 200 67
+"POST /api/face/verify/ HTTP/1.1" 200 67
+"POST /api/face/verify/ HTTP/1.1" 200 68
+"POST /api/face/verify/ HTTP/1.1" 200 68
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 16719
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 16719
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 16719
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 16719
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 4196
+"GET /static/admin/css/dark_mode.css HTTP/1.1" 304 0
+"GET /static/admin/css/base.css HTTP/1.1" 304 0
+"GET /static/admin/css/nav_sidebar.css HTTP/1.1" 304 0
+"GET /static/admin/css/responsive.css HTTP/1.1" 304 0
+"GET /static/admin/js/theme.js HTTP/1.1" 304 0
+"GET /static/admin/css/login.css HTTP/1.1" 304 0
+"GET /static/admin/js/nav_sidebar.js HTTP/1.1" 304 0
+Not Found: /favicon.ico
+"GET /favicon.ico HTTP/1.1" 404 2853
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 15184
+"GET /static/admin/css/dashboard.css HTTP/1.1" 304 0
+"GET /static/admin/img/icon-addlink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-changelink.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 304 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 18387
+"GET /static/admin/css/changelists.css HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+"GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+"GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+"GET /static/admin/js/core.js HTTP/1.1" 304 0
+"GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+"GET /static/admin/js/actions.js HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/search.svg HTTP/1.1" 304 0
+"GET /static/admin/js/filters.js HTTP/1.1" 304 0
+"GET /static/admin/img/tooltag-add.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-viewlink.svg HTTP/1.1" 304 0
+"GET /admin/ HTTP/1.1" 200 15184
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 16719
+"GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+"GET /static/admin/img/icon-yes.svg HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/img/sorting-icons.svg HTTP/1.1" 304 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 18387
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/add/ HTTP/1.1" 200 20310
+"GET /static/admin/css/forms.css HTTP/1.1" 304 0
+"GET /static/admin/js/calendar.js HTTP/1.1" 304 0
+"GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+"GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+"GET /static/admin/img/icon-calendar.svg HTTP/1.1" 304 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 18387
+"GET /admin/inventory/weapon/5/change/ HTTP/1.1" 200 21308
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/weapon/5/change/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 18599
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 16719
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /api/face/register/ HTTP/1.1" 200 126
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/verify/ HTTP/1.1" 200 68
+"POST /api/face/verify/ HTTP/1.1" 200 68
+"POST /api/face/verify/ HTTP/1.1" 200 68
+"POST /api/face/verify/ HTTP/1.1" 200 68
+"POST /api/face/verify/ HTTP/1.1" 200 68
+"POST /api/face/verify/ HTTP/1.1" 200 68
+"POST /api/face/verify/ HTTP/1.1" 200 68
+"POST /api/face/verify/ HTTP/1.1" 200 106
+"POST /api/face/verify/ HTTP/1.1" 200 68
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 16719
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/add/ HTTP/1.1" 200 17627
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/personnel/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 17758
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/add/ HTTP/1.1" 200 20388
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/weapon/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 19829
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/6/change/ HTTP/1.1" 200 21398
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/regiment/ HTTP/1.1" 200 13573
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /api/face/register/ HTTP/1.1" 200 125
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 19619
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 17510
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 17510
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342

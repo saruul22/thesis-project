@@ -1,0 +1,80 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block content %}
+<div class="module">
+    <h2>Register Face for {{ personnel }}</h2>
+
+    <div id="camera-container" style="margin-bottom: 20px;">
+        <video id="video" width="640" height="480" autoplay style="border: 1px solid #ccc;"></video>
+        <div style="margin-top: 10px;">
+            <button id="capture-button" class="button"
+                style="background-color: #417690; color: white; padding: 10px 15px; border: none; cursor: pointer;">Capture
+                Face</button>
+        </div>
+        <div id="status-message" style="margin-top: 10px; font-weight: bold;"></div>
+    </div>
+
+    <form method="post" action="{% url 'admin:inventory_personnel_change' personnel.id %}">
+        {% csrf_token %}
+        <input type="hidden" name="_continue" value="1">
+        <div class="submit-row">
+            <input type="submit" value="Save and Return to Personnel" class="default" name="_save">
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const video = document.getElementById('video');
+        const captureButton = document.getElementById('capture-button');
+        const statusMessage = document.getElementById('status-message');
+
+        // Start camera
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(function (stream) {
+                video.srcObject = stream;
+            })
+            .catch(function (err) {
+                statusMessage.textContent = 'Error accessing camera: ' + err.message;
+                statusMessage.style.color = 'red';
+            });
+
+        captureButton.addEventListener('click', function () {
+            // Capture face and send to server
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+
+            // Convert to blob and send to server
+            canvas.toBlob(function (blob) {
+                const formData = new FormData();
+                formData.append('image', blob);
+
+                fetch('{% url "admin:capture-face" %}', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': '{{ csrf_token }}'
+                    }
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            statusMessage.textContent = 'Face captured successfully! Click "Save and Return to Personnel" to complete.';
+                            statusMessage.style.color = 'green';
+                        } else {
+                            statusMessage.textContent = 'Error: ' + data.error;
+                            statusMessage.style.color = 'red';
+                        }
+                    })
+                    .catch(error => {
+                        statusMessage.textContent = 'Error: ' + error.message;
+                        statusMessage.style.color = 'red';
+                    });
+            });
+        });
+    });
+</script>
+{% endblock %}
