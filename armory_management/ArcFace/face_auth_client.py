@@ -12,6 +12,7 @@ import configparser
 from datetime import datetime
 import threading
 import queue
+from pyzbar.pyzbar import decode as decode_qr
 
 # Import local ArcFace processor for offline mode
 try:
@@ -22,7 +23,7 @@ except ImportError:
 class FaceAuthClientApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Weapon System Face Authentication")
+        self.root.title("Weapon System Authentication")
         self.root.geometry("1000x700")
         self.root.resizable(True, True)
         
@@ -64,6 +65,8 @@ class FaceAuthClientApp:
         # Status variables
         self.personnel_id = None
         self.verified = False
+        self.qr_scanned = False
+        self.qr_data = None
         
         # Processing queue for background tasks
         self.task_queue = queue.Queue()
@@ -84,6 +87,11 @@ class FaceAuthClientApp:
             'width': '640',
             'height': '480'
         }
+        config['app'] = {
+            'offline_mode': 'false',
+            'local_db_path': 'face_db',
+            'similarity_threshold': '0.6'
+        }
         
         # Try to load from file
         if os.path.exists('config.ini'):
@@ -102,24 +110,24 @@ class FaceAuthClientApp:
         main_frame.pack(fill=tk.BOTH, expand=True)
         
         # Title
-        title_label = ttk.Label(main_frame, text="Weapon System Face Authentication", font=("Arial", 18, "bold"))
+        title_label = ttk.Label(main_frame, text="Weapon System Authentication", font=("Arial", 18, "bold"))
         title_label.pack(pady=10)
         
         # Create tabs
         tab_control = ttk.Notebook(main_frame)
         
-        verify_tab = ttk.Frame(tab_control)
+        authentication_tab = ttk.Frame(tab_control)
         register_tab = ttk.Frame(tab_control)
         settings_tab = ttk.Frame(tab_control)
         
-        tab_control.add(verify_tab, text="Verify Face")
+        tab_control.add(authentication_tab, text="Authentication")
         tab_control.add(register_tab, text="Register Face")
         tab_control.add(settings_tab, text="Settings")
         
         tab_control.pack(expand=True, fill=tk.BOTH)
         
-        # ---- Verify Face Tab ----
-        self.setup_verify_tab(verify_tab)
+        # ---- Authentication Tab ----
+        self.setup_authentication_tab(authentication_tab)
         
         # ---- Register Face Tab ----
         self.setup_register_tab(register_tab)
@@ -140,8 +148,8 @@ class FaceAuthClientApp:
         # Check connection
         self.check_connection()
     
-    def setup_verify_tab(self, parent):
-        """Setup the verification tab"""
+    def setup_authentication_tab(self, parent):
+        """Setup the unified authentication tab"""
         frame = ttk.Frame(parent, padding="10")
         frame.pack(fill=tk.BOTH, expand=True)
         
@@ -150,52 +158,69 @@ class FaceAuthClientApp:
         left_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         
         # Camera feed
-        self.verify_canvas = tk.Canvas(left_panel, bg="black", width=640, height=480)
-        self.verify_canvas.pack(pady=10)
+        self.auth_canvas = tk.Canvas(left_panel, bg="black", width=640, height=480)
+        self.auth_canvas.pack(pady=10)
         
         # Camera controls
         camera_controls = ttk.Frame(left_panel)
         camera_controls.pack(pady=10)
         
-        self.start_btn = ttk.Button(camera_controls, text="Start Camera", command=self.start_camera)
-        self.start_btn.pack(side=tk.LEFT, padx=5)
+        self.auth_start_btn = ttk.Button(camera_controls, text="Start Authentication", 
+                                      command=lambda: self.start_camera(canvas=self.auth_canvas, mode="authentication"))
+        self.auth_start_btn.pack(side=tk.LEFT, padx=5)
         
-        self.stop_btn = ttk.Button(camera_controls, text="Stop Camera", command=self.stop_camera, state=tk.DISABLED)
-        self.stop_btn.pack(side=tk.LEFT, padx=5)
+        self.auth_stop_btn = ttk.Button(camera_controls, text="Stop", 
+                                     command=self.stop_camera, state=tk.DISABLED)
+        self.auth_stop_btn.pack(side=tk.LEFT, padx=5)
         
-        self.capture_btn = ttk.Button(camera_controls, text="Capture", command=self.capture_verification_image, state=tk.DISABLED)
-        self.capture_btn.pack(side=tk.LEFT, padx=5)
+        self.auth_capture_btn = ttk.Button(camera_controls, text="Capture Face", 
+                                        command=self.capture_face_for_auth, state=tk.DISABLED)
+        self.auth_capture_btn.pack(side=tk.LEFT, padx=5)
         
-        # Right panel (verification info)
+        # Right panel (authentication info)
         right_panel = ttk.Frame(frame)
         right_panel.pack(side=tk.RIGHT, fill=tk.BOTH, padx=10)
         
-        # Personnel ID input
-        id_frame = ttk.Frame(right_panel)
-        id_frame.pack(fill=tk.X, pady=10)
+        # Transaction type selection
+        transaction_frame = ttk.Frame(right_panel)
+        transaction_frame.pack(fill=tk.X, pady=10)
         
-        ttk.Label(id_frame, text="Personnel ID:").pack(side=tk.LEFT)
+        ttk.Label(transaction_frame, text="Transaction:").pack(side=tk.LEFT)
+        self.transaction_type = tk.StringVar(value="check_in")
+        ttk.Radiobutton(transaction_frame, text="Check In", variable=self.transaction_type, 
+                      value="check_in").pack(side=tk.LEFT, padx=10)
+        ttk.Radiobutton(transaction_frame, text="Check Out", variable=self.transaction_type, 
+                      value="check_out").pack(side=tk.LEFT, padx=10)
         
-        self.id_var = tk.StringVar()
-        id_entry = ttk.Entry(id_frame, textvariable=self.id_var)
-        id_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
+        # Authentication status
+        status_frame = ttk.LabelFrame(right_panel, text="Authentication Status", padding="10")
+        status_frame.pack(fill=tk.BOTH, expand=True, pady=10)
         
-        # Verification results
-        results_frame = ttk.LabelFrame(right_panel, text="Verification Results", padding="10")
-        results_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+        # QR status
+        self.qr_status_label = ttk.Label(status_frame, text="Step 1: Scan Weapon QR Code", font=("Arial", 12))
+        self.qr_status_label.pack(pady=5)
         
-        self.verify_result_label = ttk.Label(results_frame, text="Not verified", font=("Arial", 14))
-        self.verify_result_label.pack(pady=10)
+        self.weapon_info_label = ttk.Label(status_frame, text="No weapon scanned")
+        self.weapon_info_label.pack(pady=5)
         
-        self.confidence_label = ttk.Label(results_frame, text="Confidence: 0%")
-        self.confidence_label.pack(pady=5)
+        # Personnel info from QR code
+        self.personnel_info_label = ttk.Label(status_frame, text="")
+        self.personnel_info_label.pack(pady=5)
         
-        self.verify_time_label = ttk.Label(results_frame, text="Time: -")
-        self.verify_time_label.pack(pady=5)
+        # Face verification status
+        self.face_status_label = ttk.Label(status_frame, text="Step 2: Face Verification (waiting)", font=("Arial", 12))
+        self.face_status_label.pack(pady=5)
         
-        # Verify button
-        self.verify_btn = ttk.Button(right_panel, text="Verify Face", command=self.verify_face, state=tk.DISABLED)
-        self.verify_btn.pack(pady=10, fill=tk.X)
+        self.face_result_label = ttk.Label(status_frame, text="")
+        self.face_result_label.pack(pady=5)
+        
+        # Overall status
+        self.auth_result_label = ttk.Label(status_frame, text="", font=("Arial", 14, "bold"))
+        self.auth_result_label.pack(pady=10)
+        
+        # Reset button
+        self.auth_reset_btn = ttk.Button(right_panel, text="Reset", command=self.reset_authentication, state=tk.DISABLED)
+        self.auth_reset_btn.pack(pady=10, fill=tk.X)
     
     def setup_register_tab(self, parent):
         """Setup the registration tab"""
@@ -215,15 +240,15 @@ class FaceAuthClientApp:
         camera_controls.pack(pady=10)
         
         self.reg_start_btn = ttk.Button(camera_controls, text="Start Camera", 
-                                        command=lambda: self.start_camera(canvas=self.register_canvas))
+                                      command=lambda: self.start_camera(canvas=self.register_canvas, mode="register"))
         self.reg_start_btn.pack(side=tk.LEFT, padx=5)
         
         self.reg_stop_btn = ttk.Button(camera_controls, text="Stop Camera", 
-                                      command=self.stop_camera, state=tk.DISABLED)
+                                     command=self.stop_camera, state=tk.DISABLED)
         self.reg_stop_btn.pack(side=tk.LEFT, padx=5)
         
         self.reg_capture_btn = ttk.Button(camera_controls, text="Capture", 
-                                         command=self.capture_registration_image, state=tk.DISABLED)
+                                        command=self.capture_registration_image, state=tk.DISABLED)
         self.reg_capture_btn.pack(side=tk.LEFT, padx=5)
         
         # Right panel (registration info)
@@ -298,7 +323,7 @@ class FaceAuthClientApp:
         # Offline mode checkbox
         self.offline_mode_var = tk.BooleanVar(value=self.offline_mode)
         ttk.Checkbutton(offline_frame, text="Enable Offline Mode", 
-                        variable=self.offline_mode_var).grid(row=0, column=0, sticky=tk.W, pady=5)
+                       variable=self.offline_mode_var).grid(row=0, column=0, sticky=tk.W, pady=5)
         
         # Local database path
         ttk.Label(offline_frame, text="Local Database Path:").grid(row=1, column=0, sticky=tk.W, pady=5)
@@ -317,14 +342,14 @@ class FaceAuthClientApp:
         # Button to sync with server
         if LocalArcFaceProcessor is not None:
             ttk.Button(offline_frame, text="Sync with Server", 
-                       command=self.sync_with_server).grid(row=4, column=0, columnspan=2, pady=5)
+                      command=self.sync_with_server).grid(row=4, column=0, columnspan=2, pady=5)
         
         # Save button
         ttk.Button(frame, text="Save Settings", command=self.save_settings).pack(pady=10)
         
         # Test connection button
         ttk.Button(frame, text="Test Connection", command=self.check_connection).pack(pady=5)
-    
+
     def save_settings(self):
         """Save settings to config file"""
         self.config.set('api', 'base_url', self.api_url_var.get())
@@ -399,7 +424,7 @@ class FaceAuthClientApp:
         
         # Confirm sync
         if not messagebox.askyesno("Confirm Sync", 
-                                   "This will download face data from the server. Continue?"):
+                                  "This will download face data from the server. Continue?"):
             return
         
         # Disable UI during sync
@@ -431,7 +456,7 @@ class FaceAuthClientApp:
                 fail_count = 0
                 
                 # Download each face record
-                for person in personnel_list:
+                for person in personnel_list.get('records', []):
                     personnel_id = person.get('personnel_id')
                     
                     if not personnel_id:
@@ -503,8 +528,8 @@ class FaceAuthClientApp:
             
             # Send a simple request to check if the API is accessible
             response = requests.get(f"{self.api_base_url.rstrip('/')}/verify/", 
-                                    timeout=3,
-                                    headers=headers)
+                                   timeout=3,
+                                   headers=headers)
             
             if response.status_code in [200, 401, 403, 404]:  # Any of these means server is up
                 self.connection_label.config(text="Connected", foreground="green")
@@ -517,21 +542,37 @@ class FaceAuthClientApp:
             self.connection_label.config(text="Connection Error", foreground="red")
             return False
     
-    def start_camera(self, canvas=None):
+    def start_camera(self, canvas=None, mode=None):
         """Start the webcam feed"""
-        if canvas is None:
-            canvas = self.verify_canvas
-            self.active_canvas = self.verify_canvas
-            self.start_btn.config(state=tk.DISABLED)
-            self.stop_btn.config(state=tk.NORMAL)
-            self.capture_btn.config(state=tk.NORMAL)
+        # Store the current mode
+        self.current_mode = mode
+        self.active_canvas = canvas
+        
+        # Reset states for authentication process if needed
+        if mode == "authentication":
+            self.qr_scanned = False
+            self.qr_data = None
+            self.personnel_id = None
+            self.qr_status_label.config(text="Step 1: Scan Weapon QR Code", foreground="black")
+            self.face_status_label.config(text="Step 2: Face Verification (waiting)", foreground="gray")
+            self.weapon_info_label.config(text="No weapon scanned")
+            self.personnel_info_label.config(text="")
+            self.face_result_label.config(text="")
+            self.auth_result_label.config(text="")
+            self.auth_capture_btn.config(state=tk.DISABLED)
+            self.auth_reset_btn.config(state=tk.DISABLED)
+            
+            # Update buttons
+            self.auth_start_btn.config(state=tk.DISABLED)
+            self.auth_stop_btn.config(state=tk.NORMAL)
             self.reg_start_btn.config(state=tk.DISABLED)
-        else:
-            self.active_canvas = canvas
+            
+        elif mode == "register":
+            # Update buttons for register mode
             self.reg_start_btn.config(state=tk.DISABLED)
             self.reg_stop_btn.config(state=tk.NORMAL)
             self.reg_capture_btn.config(state=tk.NORMAL)
-            self.start_btn.config(state=tk.DISABLED)
+            self.auth_start_btn.config(state=tk.DISABLED)
         
         try:
             device_id = int(self.config.get('camera', 'device_id'))
@@ -549,18 +590,55 @@ class FaceAuthClientApp:
                 return
             
             self.is_capturing = True
-            self.update_camera(canvas)
+            self.update_camera()
             self.status_label.config(text="Camera started")
             
         except Exception as e:
             messagebox.showerror("Camera Error", f"Error starting camera: {str(e)}")
             self.stop_camera()
     
-    def update_camera(self, canvas):
+    def update_camera(self):
         """Update the camera feed on the canvas"""
         if self.is_capturing and self.cap and self.cap.isOpened():
             ret, frame = self.cap.read()
             if ret:
+                # Store the original frame
+                self.current_frame = frame.copy()
+                
+                # Handle different modes
+                if hasattr(self, 'current_mode') and self.current_mode == "authentication":
+                    if not self.qr_scanned:
+                        # In QR scanning mode
+                        qr_codes = decode_qr(frame)
+                        if qr_codes:
+                            for qr in qr_codes:
+                                # Draw rectangle around QR code
+                                points = qr.polygon
+                                if len(points) > 4:
+                                    hull = cv2.convexHull(
+                                        np.array([(p.x, p.y) for p in points], dtype=np.int32))
+                                    cv2.polylines(frame, [hull], True, (0, 255, 0), 2)
+                                else:
+                                    cv2.polylines(
+                                        frame, 
+                                        [np.array([(p.x, p.y) for p in points], dtype=np.int32)], 
+                                        True, 
+                                        (0, 255, 0), 
+                                        2
+                                    )
+                                
+                                # Process QR data
+                                self.qr_data = qr.data.decode('utf-8')
+                                self.qr_scanned = True
+                                self.qr_status_label.config(text="Step 1: QR Code Scanned ✓", foreground="green")
+                                
+                                # Get weapon and personnel info from server
+                                self.get_weapon_and_personnel_info(self.qr_data)
+                    else:
+                        # In face verification mode (after QR is scanned)
+                        # Here you could add face detection visualization
+                        pass
+                
                 # Convert to RGB for tkinter
                 frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
                 
@@ -569,43 +647,207 @@ class FaceAuthClientApp:
                 photo = ImageTk.PhotoImage(image=self.current_image)
                 
                 # Update canvas
-                canvas.create_image(0, 0, image=photo, anchor=tk.NW)
-                canvas.photo = photo
-                
-                # Store the current frame
-                self.current_frame = frame
+                self.active_canvas.create_image(0, 0, image=photo, anchor=tk.NW)
+                self.active_canvas.photo = photo
             
             # Schedule the next update
-            canvas.after(10, lambda: self.update_camera(canvas))
+            self.root.after(10, self.update_camera)
     
     def stop_camera(self):
         """Stop the webcam feed"""
         self.is_capturing = False
-        if self.cap and self.cap.isOpened():
+        if hasattr(self, 'cap') and self.cap and self.cap.isOpened():
             self.cap.release()
         
-        self.start_btn.config(state=tk.NORMAL)
-        self.stop_btn.config(state=tk.DISABLED)
-        self.capture_btn.config(state=tk.DISABLED)
-        self.verify_btn.config(state=tk.DISABLED)
-        
-        self.reg_start_btn.config(state=tk.NORMAL)
-        self.reg_stop_btn.config(state=tk.DISABLED)
-        self.reg_capture_btn.config(state=tk.DISABLED)
-        self.register_btn.config(state=tk.DISABLED)
+        if hasattr(self, 'current_mode'):
+            if self.current_mode == "authentication":
+                self.auth_start_btn.config(state=tk.NORMAL)
+                self.auth_stop_btn.config(state=tk.DISABLED)
+                self.auth_capture_btn.config(state=tk.DISABLED)
+                self.reg_start_btn.config(state=tk.NORMAL)
+            elif self.current_mode == "register":
+                self.reg_start_btn.config(state=tk.NORMAL)
+                self.reg_stop_btn.config(state=tk.DISABLED)
+                self.reg_capture_btn.config(state=tk.DISABLED)
+                self.register_btn.config(state=tk.DISABLED)
+                self.auth_start_btn.config(state=tk.NORMAL)
         
         self.status_label.config(text="Camera stopped")
     
-    def capture_verification_image(self):
-        """Capture image for verification"""
+    def get_weapon_and_personnel_info(self, qr_data):
+        """Get weapon information and associated personnel from the server based on QR code"""
+        try:
+            # Prepare headers
+            headers = {'Content-Type': 'application/json'}
+            if self.api_token:
+                headers['Authorization'] = f'Token {self.api_token}'
+            
+            # Send request to your server
+            url = f"{self.api_base_url.rstrip('/')}/weapon/info/"
+            response = requests.post(
+                url, 
+                json={"qr_code": qr_data, "transaction_type": self.transaction_type.get()}, 
+                headers=headers,
+                timeout=10
+            )
+            
+            if response.status_code == 200:
+                result = response.json()
+                
+                # Display weapon info
+                weapon_info = result.get('weapon_info', {})
+                self.weapon_info_label.config(
+                    text=f"Weapon: {weapon_info.get('model', 'Unknown')} - {weapon_info.get('serial_number', 'Unknown')}"
+                )
+                
+                # Store and display personnel info
+                self.personnel_id = result.get('personnel_id')
+                personnel_info = result.get('personnel_info', {})
+                
+                if self.personnel_id:
+                    self.personnel_info_label.config(
+                        text=f"Personnel: {personnel_info.get('rank', '')} {personnel_info.get('name', 'Unknown')} ({self.personnel_id})"
+                    )
+                    self.face_status_label.config(text="Step 2: Face Verification (active)", foreground="black")
+                    # Enable capture button now that we have a personnel ID
+                    self.auth_capture_btn.config(state=tk.NORMAL)
+                else:
+                    self.personnel_info_label.config(text="No personnel assigned to this weapon")
+                    # Handle based on transaction type
+                    if self.transaction_type.get() == "check_in":
+                        self.face_status_label.config(text="Step 2: Cannot check in - no assigned personnel", foreground="red")
+                    else:  # check_out
+                        self.face_status_label.config(text="Step 2: Ready for assignment", foreground="blue")
+                        # Ask for personnel ID for checkout
+                        personnel_id = simpledialog.askstring("Input", "Enter Personnel ID for weapon assignment:")
+                        if personnel_id:
+                            self.personnel_id = personnel_id
+                            self.personnel_info_label.config(text=f"Personnel ID for assignment: {personnel_id}")
+                            self.auth_capture_btn.config(state=tk.NORMAL)
+                        else:
+                            self.reset_authentication()
+                
+            else:
+                error_message = f"Could not retrieve weapon information: {response.text}"
+                self.weapon_info_label.config(text=f"Error: {error_message}")
+                messagebox.showerror("Error", error_message)
+                self.reset_authentication()
+                
+        except Exception as e:
+            error_message = f"Error getting weapon info: {str(e)}"
+            self.weapon_info_label.config(text=f"Error: {error_message}")
+            messagebox.showerror("Error", error_message)
+            self.reset_authentication()
+    
+    def capture_face_for_auth(self):
+        """Capture face image for authentication"""
+        if not self.qr_scanned:
+            messagebox.showwarning("Workflow Error", "Please scan a QR code first")
+            return
+        
         if not hasattr(self, 'current_frame') or self.current_frame is None:
             messagebox.showerror("Error", "No frame to capture")
             return
         
+        if not hasattr(self, 'personnel_id') or not self.personnel_id:
+            if self.transaction_type.get() == "check_in":
+                messagebox.showerror("Error", "No personnel assigned to this weapon")
+                return
+            else:
+                # For check-out, we need to ask for personnel ID
+                personnel_id = simpledialog.askstring("Input", "Enter Personnel ID for weapon assignment:")
+                if not personnel_id:
+                    return
+                self.personnel_id = personnel_id
+                self.personnel_info_label.config(text=f"Personnel ID for assignment: {personnel_id}")
+        
         # Store captured frame
         self.captured_frame = self.current_frame.copy()
-        self.status_label.config(text="Image captured for verification")
-        self.verify_btn.config(state=tk.NORMAL)
+        
+        # Process face verification with the stored personnel ID
+        self.auth_capture_btn.config(state=tk.DISABLED)
+        self.verify_face_for_transaction(self.personnel_id, self.captured_frame, self.qr_data)
+    
+    def verify_face_for_transaction(self, personnel_id, frame, qr_data):
+        """Verify face and complete transaction"""
+        try:
+            # Convert frame to JPEG format
+            _, buffer = cv2.imencode('.jpg', frame)
+            
+            # Convert to base64
+            img_base64 = base64.b64encode(buffer).decode('utf-8')
+            
+            # Prepare data for API
+            data = {
+                'personnel_id': personnel_id,
+                'face_image': img_base64,
+                'qr_code': qr_data,
+                'transaction_type': self.transaction_type.get()
+            }
+            
+            # Set headers
+            headers = {'Content-Type': 'application/json'}
+            if self.api_token:
+                headers['Authorization'] = f'Token {self.api_token}'
+            
+            # Send request
+            url = f"{self.api_base_url.rstrip('/')}/weapon/transaction/"
+            
+            # Update status
+            self.status_label.config(text="Processing transaction...")
+            self.face_status_label.config(text="Step 2: Verifying face...", foreground="blue")
+            
+            response = requests.post(url, json=data, headers=headers, timeout=10)
+            
+            if response.status_code == 200:
+                result = response.json()
+                
+                if result.get('verified', False):
+                    self.face_status_label.config(text="Step 2: Face Verified ✓", foreground="green")
+                    self.face_result_label.config(text=f"Confidence: {result.get('confidence', 0) * 100:.2f}%")
+                    
+                    # Display transaction result
+                    if result.get('transaction_success', False):
+                        transaction_type = "CHECK-IN" if self.transaction_type.get() == "check_in" else "CHECK-OUT"
+                        self.auth_result_label.config(text=f"{transaction_type} SUCCESSFUL", foreground="green")
+                    else:
+                        self.auth_result_label.config(
+                            text=f"TRANSACTION FAILED: {result.get('message', '')}", 
+                            foreground="red"
+                        )
+                else:
+                    self.face_status_label.config(text="Step 2: Face Verification Failed ✗", foreground="red")
+                    self.face_result_label.config(text=f"Confidence: {result.get('confidence', 0) * 100:.2f}%")
+                    self.auth_result_label.config(text="TRANSACTION FAILED: Face verification failed", foreground="red")
+            else:
+                self.face_status_label.config(text="Step 2: Verification Error ✗", foreground="red")
+                self.auth_result_label.config(text=f"TRANSACTION FAILED: {response.text}", foreground="red")
+                
+        except Exception as e:
+            self.face_status_label.config(text="Step 2: Verification Error ✗", foreground="red")
+            self.auth_result_label.config(text=f"TRANSACTION FAILED: {str(e)}", foreground="red")
+        
+        # Enable reset button
+        self.auth_reset_btn.config(state=tk.NORMAL)
+        self.status_label.config(text="Transaction complete")
+    
+    def reset_authentication(self):
+        """Reset the authentication process"""
+        self.qr_scanned = False
+        self.qr_data = None
+        self.personnel_id = None
+        
+        self.qr_status_label.config(text="Step 1: Scan Weapon QR Code", foreground="black")
+        self.weapon_info_label.config(text="No weapon scanned")
+        self.personnel_info_label.config(text="")
+        self.face_status_label.config(text="Step 2: Face Verification (waiting)", foreground="gray")
+        self.face_result_label.config(text="")
+        self.auth_result_label.config(text="")
+        
+        self.auth_capture_btn.config(state=tk.DISABLED)
+        self.auth_reset_btn.config(state=tk.DISABLED)
+        
+        self.status_label.config(text="Authentication reset")
     
     def capture_registration_image(self):
         """Capture image for registration"""
@@ -617,158 +859,6 @@ class FaceAuthClientApp:
         self.captured_frame = self.current_frame.copy()
         self.status_label.config(text="Image captured for registration")
         self.register_btn.config(state=tk.NORMAL)
-    
-    def verify_face(self):
-        """Verify face against server or local records"""
-        if not hasattr(self, 'captured_frame'):
-            messagebox.showerror("Error", "No image captured")
-            return
-        
-        personnel_id = self.id_var.get().strip()
-        if not personnel_id:
-            messagebox.showerror("Error", "Personnel ID is required")
-            return
-        
-        # Disable buttons during verification
-        self.verify_btn.config(state=tk.DISABLED)
-        self.status_label.config(text="Verifying face...")
-        
-        # Use a background thread to avoid freezing the UI
-        def verification_task():
-            if self.offline_mode and self.local_processor:
-                # Use local processor for verification
-                return self.verify_face_locally(personnel_id, self.captured_frame)
-            else:
-                # Use server API for verification
-                return self.verify_face_online(personnel_id, self.captured_frame)
-        
-        # Queue the task
-        self.task_queue.put((verification_task, self.handle_verification_result))
-    
-    def verify_face_locally(self, personnel_id, frame):
-        """Verify face using local processor"""
-        try:
-            # Verify using local processor
-            result = self.local_processor.verify_face(personnel_id, frame, self.similarity_threshold)
-            
-            # Return result and set status
-            current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            return {
-                'success': True,
-                'result': result,
-                'time': current_time,
-                'status': "Verification complete using local processor"
-            }
-        except Exception as e:
-            return {
-                'success': False, 
-                'error': str(e),
-                'status': "Local verification failed"
-            }
-    
-    def verify_face_online(self, personnel_id, frame):
-        """Verify face using server API"""
-        try:
-            # Convert frame to JPEG format
-            _, buffer = cv2.imencode('.jpg', frame)
-            
-            # Convert to base64
-            img_base64 = base64.b64encode(buffer).decode('utf-8')
-            
-            # Prepare data for API
-            data = {
-                'personnel_id': personnel_id,
-                'face_image': img_base64
-            }
-            
-            # Set headers
-            headers = {'Content-Type': 'application/json'}
-            if self.api_token:
-                headers['Authorization'] = f'Token {self.api_token}'
-            
-            # Send request
-            url = f"{self.api_base_url.rstrip('/')}/verify/"
-            response = requests.post(url, json=data, headers=headers, timeout=10)
-            
-            if response.status_code == 200:
-                # Success
-                result = response.json()
-                current_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                
-                return {
-                    'success': True,
-                    'result': result,
-                    'time': current_time,
-                    'status': "Verification complete"
-                }
-                
-            elif response.status_code == 404:
-                return {
-                    'success': False,
-                    'error': "No face record found for this personnel ID",
-                    'status': "Verification failed - no record found"
-                }
-                
-            else:
-                # Error
-                return {
-                    'success': False,
-                    'error': f"API Error: {response.text}",
-                    'status': "Verification failed"
-                }
-                
-        except Exception as e:
-            return {
-                'success': False,
-                'error': str(e),
-                'status': "Verification failed - connection error"
-            }
-    
-    def handle_verification_result(self, result):
-        """Handle the verification result and update UI"""
-        # Re-enable button
-        self.verify_btn.config(state=tk.NORMAL)
-        
-        if result['success']:
-            api_result = result['result']
-            
-            if api_result.get('verified', False):
-                self.verify_result_label.config(text="VERIFIED", foreground="green")
-                self.confidence_label.config(text=f"Confidence: {api_result.get('confidence', 0) * 100:.2f}%")
-            else:
-                self.verify_result_label.config(text="NOT VERIFIED", foreground="red")
-                self.confidence_label.config(text=f"Confidence: {api_result.get('confidence', 0) * 100:.2f}%")
-            
-            # Update time
-            self.verify_time_label.config(text=f"Time: {result['time']}")
-            
-        else:
-            self.verify_result_label.config(text="ERROR", foreground="red")
-            self.confidence_label.config(text="Confidence: 0%")
-            messagebox.showerror("Verification Error", result['error'])
-        
-        self.status_label.config(text=result['status'])
-    
-    def process_tasks(self):
-        """Process tasks from the queue in background"""
-        while True:
-            try:
-                # Get a task from the queue
-                task_func, callback = self.task_queue.get(block=True)
-                
-                # Execute the task
-                result = task_func()
-                
-                # Schedule the callback in the main thread
-                self.root.after(0, lambda: callback(result))
-                
-                # Mark task as done
-                self.task_queue.task_done()
-                
-            except Exception as e:
-                print(f"Task processing error: {str(e)}")
-                # Continue processing tasks even if one fails
-                continue
     
     def register_face(self):
         """Register face with the server or locally"""
@@ -880,6 +970,31 @@ class FaceAuthClientApp:
                 'error': str(e),
                 'status': "Registration failed - connection error"
             }
+        
+    def handle_verification_result(self, result):
+        """Handle the verification result and update UI"""
+        # Re-enable button if needed
+        self.verify_btn.config(state=tk.NORMAL)
+
+        if result['success']:
+            api_result = result['result']
+
+            if api_result.get('verified', False):
+                self.verify_result_label.config(text="VERIFIED", foreground="green")
+                self.confidence_label.config(text=f"Configence: {api_result.get('confidence', 0) * 100:.2f}")
+            else:
+                self.verify_result_label.config(text="NOT VERIFIED", foreground="red")
+                self.confidence_label.config(text=f"Confidence: {api_result.get('confidence', 0) * 100:.2f}")
+            
+            # Update time
+            self.verify_time_label.config(text=f"Time: {result['time']}")
+
+        else:
+            self.verify_result_label.config(text="ERROR", foreground="red")
+            self.confidence_label.config(text="Confidence: 0%")
+            messagebox.showerror("Verification Error", result['error'])
+
+        self.status_label.config(text=result['status'])
     
     def handle_registration_result(self, result):
         """Handle the registration result and update UI"""
@@ -901,6 +1016,111 @@ class FaceAuthClientApp:
             messagebox.showerror("Registration Error", result['error'])
         
         self.status_label.config(text=result['status'])
+
+    def verify_face_for_transaction(self, personnel_id, frame, qr_data):
+        """Verify face and complete transaction with auto-reset"""
+        try:
+            # Convert frame to JPEG format
+            _, buffer = cv2.imencode('.jpg', frame)
+
+            # Convert to base64
+            img_base64 = base64.b64encode(buffer).decode('utf-8')
+
+            # Prepare data for API
+            data = {
+                'personnel_id': personnel_id,
+                'face_image': img_base64,
+                'qr_code': qr_data,
+                'transaction_type': self.transaction_type.get()
+            }
+
+            # Set headers
+            headers = {'Content-Type': 'application/json'}
+            if self.api_token:
+                headers['Authorization'] = f'Token {self.api_token}'
+
+            # Send request
+            url = f"{self.api_base_url.rstrip('/')}/weapon/transaction/"
+
+            # Update status
+            self.status_label.config(text="Processing transaction...")
+            self.face_status_label.config(text="Step 2: Verifying face...", foreground="blue")
+
+            response = requests.post(url, json=data, headers=headers, timeout=10)
+
+            if response.status_code == 200:
+                result = response.json()
+
+                if result.get('verified', False):
+                    self.face_status_label.config(text="Step 2: Face Verified ✓", foreground="green")
+                    self.face_result_label.config(text=f"Confidence: {result.get('confidence', 0) * 100:.2f}%")
+
+                    # Display transaction result
+                    if result.get('transaction_success', False):
+                        transaction_type = "CHECK-IN" if self.transaction_type.get() == 'check_in' else "CHECK-OUT"
+                        self.auth_result_label.config(text=f"{transaction_type} SUCCESSFUL", foreground="green")
+
+                        # Schedule auto-reset after successful transaction
+                        self.root.after(3000, self.auto_reset_for_next_transaction)
+                    else:
+                        self.auth_result_label.config(
+                            text=f"TRANSACTION FAILED: {result.get('message', '')}", 
+                            foreground="red"
+                        )
+                        # Enable reset button for failed transactions
+                        self.auth_reset_btn.config(state=tk.NORMAL)
+                else:
+                    self.face_status_label.config(text="Step 2: Face Verification Failed ✗", foreground="red")
+                    self.face_result_label.config(text=f"Confidence: {result.get('confidence', 0) * 100:.2f}%")
+                    self.auth_result_label.config(text="TRANSACTION FAILED: Face verification failed", foreground="red")
+                    # Enable reset button for failed transactions
+                    self.auth_reset_btn.config(state=tk.NORMAL)
+            else:
+                self.face_status_label.config(text="Step 2: Verification Error ✗", foreground="red")
+                self.auth_result_label.config(text=f"TRANSACTION FAILED: {response.text}", foreground="red")
+                # Enable reset button for failed transactions
+                self.auth_reset_btn.config(state=tk.NORMAL)
+
+        except Exception as e:
+            self.face_status_label.config(text="Step 2: Verification Error ✗", foreground="red")
+            self.auth_result_label.config(text=f"TRANSACTION FAILED: {str(e)}", foreground="red")
+            # Enable reset button for failed transactions
+            self.auth_reset_btn.config(state=tk.NORMAL)
+
+        self.status_label.config(text="Transaction complete")
+
+    def auto_reset_for_next_transaction(self):
+        """Automatically reset after successful transaction"""
+        self.reset_authentication()
+        
+        # Optional: Play a sound or show a temporary message
+        self.status_label.config(text="Ready for next transaction")
+        
+        # You could also flash the screen briefly to indicate readiness
+        original_bg = self.auth_canvas.cget("background")
+        self.auth_canvas.config(background="green")
+        self.root.after(200, lambda: self.auth_canvas.config(background=original_bg))
+    
+    def process_tasks(self):
+        """Process tasks from the queue in background"""
+        while True:
+            try:
+                # Get a task from the queue
+                task_func, callback = self.task_queue.get(block=True)
+                
+                # Execute the task
+                result = task_func()
+                
+                # Schedule the callback in the main thread
+                self.root.after(0, lambda r=result: callback(r))
+                
+                # Mark task as done
+                self.task_queue.task_done()
+                
+            except Exception as e:
+                print(f"Task processing error: {str(e)}")
+                # Continue processing tasks even if one fails
+                continue
     
     def on_closing(self):
         """Clean up resources before closing"""

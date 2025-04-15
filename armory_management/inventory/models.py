@@ -63,6 +63,16 @@ class Weapon(models.Model):
     acquisition_date = models.DateField(null=True, blank=True)
     last_maintenance_date = models.DateField(null=True, blank=True)
     notes = models.TextField(blank=True, null=True)
+    LOCATION_CHOICES = [
+        ('in', 'Хадгалагдасан'),
+        ('out', 'Гарсан'),
+    ]
+    location = models.CharField(
+        max_length=10,
+        choices=LOCATION_CHOICES,
+        default='in',
+        help_text="Галт зэвсгийн байршил"
+    )
     
     def __str__(self):
         return f"{self.weapon_model} - {self.serial_number}"
