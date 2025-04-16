@@ -1190,3 +1190,136 @@ Method Not Allowed: /api/face/verify/
 "POST /api/face/weapon/transaction/ HTTP/1.1" 200 146
 "GET / HTTP/1.1" 302 0
 "GET /admin/ HTTP/1.1" 200 15381
+Watching for file changes with StatReloader
+"GET /admin/ HTTP/1.1" 200 15381
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 17016
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/add/ HTTP/1.1" 200 22004
+"GET /static/admin/css/forms.css HTTP/1.1" 304 0
+"GET /static/admin/js/calendar.js HTTP/1.1" 304 0
+"GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 304 0
+"GET /static/admin/css/widgets.css HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+"GET /static/admin/img/icon-deletelink.svg HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+"GET /static/admin/img/icon-calendar.svg HTTP/1.1" 304 0
+"POST /admin/inventory/weapon/add/ HTTP/1.1" 200 22324
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 17909
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/personnel/add/ HTTP/1.1" 200 18479
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/personnel/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 18872
+"GET /static/admin/img/icon-no.svg HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/add/ HTTP/1.1" 200 22059
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /admin/inventory/weapon/add/ HTTP/1.1" 302 0
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 18428
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/register/ HTTP/1.1" 200 125
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 118
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 323
+"POST /api/face/weapon/info/ HTTP/1.1" 200 271
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 117
+"POST /api/face/weapon/info/ HTTP/1.1" 200 271
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 321
+"POST /api/face/weapon/info/ HTTP/1.1" 200 273
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 117
+"POST /api/face/weapon/info/ HTTP/1.1" 200 278
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 325
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 324
+"GET /admin/face_authentication/authenticationlog/ HTTP/1.1" 200 29809
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 26347
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 26347
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /api/face/weapon/info/ HTTP/1.1" 200 278
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 325
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 27015
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 27015
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 27015
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+/home/saruul/thesis_project/armory_management/face_authentication/views_transaction.py changed, reloading.
+Watching for file changes with StatReloader
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 324
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 141
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 141
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 27682
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"POST /api/face/weapon/info/ HTTP/1.1" 200 278
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 324
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 146
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 146
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 146
+"GET /admin/face_authentication/weapontransaction/ HTTP/1.1" 200 28351
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 324
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 141
+"POST /api/face/weapon/info/ HTTP/1.1" 200 278
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 325
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 323
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 141
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 140
+"POST /api/face/register/ HTTP/1.1" 200 126
+"POST /api/face/weapon/info/ HTTP/1.1" 200 278
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 325
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 146
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 146
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 146
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 324
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 141
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 141

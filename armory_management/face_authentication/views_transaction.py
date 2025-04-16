@@ -20,17 +20,11 @@ arcface_client = ArcFaceClient()
 @api_view(['POST'])
 def weapon_info(request):
     """
-    Get information about a weapon and its assigned personnel based on QR code
+    Get information about a weapon and determine appropriate transaction
     """
     try:
         qr_code = request.data.get('qr_code')
-        transaction_type = request.data.get('transaction_type', 'checkin')  # Default to check-in
-        
-        if not qr_code:
-            return Response(
-                {'error': 'QR code is required'},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        auto_detect = request.data.get('auto_detect', False)
         
         # Find the weapon by QR code
         try:
@@ -41,13 +35,19 @@ def weapon_info(request):
                 status=status.HTTP_404_NOT_FOUND
             )
         
+        # Get weapon's current location
+        location = getattr(weapon, 'location', 'unknown')
+
+        # Determine recommended action based on location
+        recommended_action = 'check_in' if location == 'field' else 'check_out'
+        
         # Get weapon info
         weapon_info = {
             'id': weapon.id,
             'serial_number': weapon.serial_number,
             'model': weapon.weapon_model,
             'status': weapon.status,
-            'location': getattr(weapon, 'location', 'unknown')
+            'location': location
         }
         
         # Get personnel info if assigned
@@ -69,7 +69,7 @@ def weapon_info(request):
             'weapon_info': weapon_info,
             'personnel_id': personnel_id,
             'personnel_info': personnel_info,
-            'transaction_type': transaction_type
+            'recommended_action': recommended_action
         })
         
     except Exception as e:
