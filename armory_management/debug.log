@@ -1323,3 +1323,28 @@ Method Not Allowed: /api/face/verify/
 "POST /api/face/weapon/transaction/ HTTP/1.1" 200 324
 "POST /api/face/weapon/transaction/ HTTP/1.1" 200 141
 "POST /api/face/weapon/transaction/ HTTP/1.1" 200 141
+Watching for file changes with StatReloader
+"POST /api/face/weapon/info/ HTTP/1.1" 200 278
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/weapon/info/ HTTP/1.1" 200 278
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/weapon/info/ HTTP/1.1" 200 278
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 325
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 324
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 141
+"POST /api/face/weapon/info/ HTTP/1.1" 200 278
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 325
+/home/saruul/thesis_project/armory_management/face_authentication/arcface_client.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+Method Not Allowed: /api/face/verify/
+"GET /api/face/verify/ HTTP/1.1" 405 40
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 324
+"POST /api/face/weapon/info/ HTTP/1.1" 200 278
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 325
+"POST /api/face/weapon/info/ HTTP/1.1" 200 276
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 324

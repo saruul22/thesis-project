@@ -642,50 +642,61 @@ class FaceAuthClientApp:
                                 self.get_weapon_and_personnel_info(self.qr_data)
 
                     elif self.personnel_id and not hasattr(self, 'verification_in_progress'):
-                        # Only if we have a personnel ID and not currently verifying
-                        # Convert to grayscale for face detection
-                        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                        # Initialize frame counter if not exists
+                        if not hasattr(self, 'frame_counter'):
+                            self.frame_counter = 0
+                        self.frame_counter += 1
 
-                        # Use a face cascade classifier
-                        face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+                        # Only run face detection every 2nd frame for efficiency
+                        if self.frame_counter % 2 == 0:
+                            # Create a smaller version of the frame for faster processing
+                            frame_small = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
 
-                        frame_small = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
-                        faces = face_cascade.detectMultiScale(cv2.cvtColor(frame_small, cv2.COLOR_BGR2GRAY), 1.3, 5)
+                            # Convert to grayscale for face detection
+                            gray = cv2.cvtColor(frame_small, cv2.COLOR_BGR2GRAY)
 
-                        # Draw rectangles around the faces
-                        for(x, y, w, h) in faces:
-                            cv2.rectangle(frame, (int(x*2), int(y*2)), (int((x+w)*2), int((y+h)*2)), (0, 255, 0), 2)
+                            # Use a face cascade classifier
+                            face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+                            faces = face_cascade.detectMultiScale(gray, 1.3, 5)
 
-                        # If we detect exactly one face that's large enough (close to camera)
-                        if len(faces) == 1 and faces[0][2] > 100 and faces[0][3] > 100:
-                            # Draw thicker rectangle to indicate "ready to capture"
-                            (x, y, w, h) = faces[0]
-                            cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 4)
+                            # Scale coordinates back up and draw rectangles around the faces
+                            for (x, y, w, h) in faces:
+                                # Scale coordinates back to original size
+                                x2, y2, w2, h2 = int(x*2), int(y*2), int(w*2), int(h*2)
+                                cv2.rectangle(frame, (x2, y2), (x2+w2, y2+h2), (0, 255, 0), 2)
 
-                            # Count frames with a face detected (for stability)
-                            if not hasattr(self, 'face_detection_counter'):
-                                self.face_detection_counter = 0
-                            self.face_detection_counter += 1
+                            # If we detect exactly one face that's large enough (close to camera)
+                            if len(faces) == 1 and faces[0][2] > 50 and faces[0][3] > 50: # Reduced size threshold for small frame
+                                # Draw a thicker rectangle to indicate "ready to capture"
+                                (x, y, w, h) = faces[0]
+                                # Scale coordinates back to original size
+                                x2, y2, w2, h2 = int(x*2), int(y*2), int(w*2), int(h*2)
+                                cv2.rectangle(frame, (x2, y2), (x2+w2, y2+h2), (0, 255, 0), 4)
 
-                            # After detecting a stable face for multiple frames, auto-capture
-                            if self.face_detection_counter > 3: # Reduced threshold for faster detection
-                                # Set a flag to prevent multiple simultaneous verifications
-                                self.verification_in_progress = True
+                                # Count frames with a face detected (for stability)
+                                if not hasattr(self, 'face_detection_counter'):
+                                    self.face_detection_counter = 0
+                                self.face_detection_counter += 1
 
-                                # Auto-capture and verify
-                                self.captured_frame = self.current_frame.copy()
-                                self.face_status_label.config(text="Face detected! Verifying...", foreground="blue")
+                                # After detecting a stable face for multiple frames, auto-capture
+                                # Reduced from 10 to 3 frames for faster triggering
+                                if self.face_detection_counter > 3:
+                                    # Set a flag to prevent multiple simultaneous verifications
+                                    self.verification_in_progress = True
 
-                                # Proceed to verification (run in a separate thread)
-                                threading.Thread(
-                                    target=self.run_face_verification,
-                                    daemon=True
-                                ).start()
+                                    # Auto-capture and verify
+                                    self.captured_frame = self.current_frame.copy()
+                                    self.face_status_label.config(text="Face detected! Verifying...", foreground="blue")
 
-                    else:
-                        # Reset counter if no face or multiple faces
-                        if hasattr(self, 'face_detection_counter'):
-                            self.face_detection_counter = 0;
+                                    # Proceed to verification (run in a seperate thread)
+                                    threading.Thread(
+                                        target=self.run_face_verification,
+                                        daemon=True
+                                    ).start()
+                            else:
+                                # Reset counter if no face or multiple faces
+                                if hasattr(self, 'face_detection_counter'):
+                                    self.face_detection_counter = 0
 
                 # Convert to RGB for tkinter and update canvas
                 frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -833,12 +844,9 @@ class FaceAuthClientApp:
     def verify_face_for_transaction(self, personnel_id, frame, qr_data):
         """Verify face and complete transaction with auto-reset"""
         try:
-            # Display status
-            self.status_label.config(text="Processing transaction...")
-            self.face_status_label.config(text="Step 2: Verifying face...", foreground="blue")
-
-            # Convert frame to JPEG format
-            _, buffer = cv2.imencode('.jpg', frame)
+            # Compress image before sending to reduce data size
+            encode_param = [int(cv2.IMWRITE_JPEG_QUALITY), 70] # Lower quality = smaller size
+            _, buffer = cv2.imencode('.jpg',frame, encode_param)
 
             # Convert to base64
             img_base64 = base64.b64encode(buffer).decode('utf-8')
@@ -860,14 +868,16 @@ class FaceAuthClientApp:
             headers = {'Content-Type': 'application/json'}
             if self.api_token:
                 headers['Authorization'] = f'Token {self.api_token}'
-                print(f"Using API token: {self.api_token[:5]}...")
 
             # Send request
             url = f"{self.api_base_url.rstrip('/')}/weapon/transaction/"
             print(f"Sending request to: {url}")
 
-            response = requests.post(url, json=data, headers=headers, timeout=15)  # Increased timeout
-            print(f"Response status code: {response.status_code}")
+            # Update status
+            self.status_label.config(text="Processing transaction...")
+            self.face_status_label.config(text="Step 2: Verifying face...", foreground="blue")
+
+            response = requests.post(url, json=data, headers=headers, timeout=10)
 
             if response.status_code == 200:
                 result = response.json()

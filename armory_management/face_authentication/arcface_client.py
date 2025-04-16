@@ -29,6 +29,9 @@ class ArcFaceClient:
             'Content-Type': 'application/json',
             'x-api-key': self.api_key
         }
+
+        # Use session for connection pooling
+        self.session = requests.Session()
     
     def detect_face(self, image_data):
         """
