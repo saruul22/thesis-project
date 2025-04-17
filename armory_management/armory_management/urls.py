@@ -9,10 +9,11 @@ admin.site.site_title = "Armory Management"
 admin.site.index_title = "Welcome to Armory Management System"
 
 urlpatterns = [
-    path('', RedirectView.as_view(url='admin/', permanent=False)),
+    path('', RedirectView.as_view(url='dashboard/', permanent=False)),
     path('admin/', admin.site.urls),
     path('api/face/', include('face_authentication.urls')),
     # Add API endpoints if needed for mobile/edge devices
+    path('dashboard/', include('dashboard.urls', namespace='dashboard')),
 ]
 
 # Serve media files in development

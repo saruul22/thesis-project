@@ -1,0 +1,58 @@
+{% if transactions %}
+<div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Weapon</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Personnel
+                </th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Verified By
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for transaction in transactions %}
+            <tr class="{% if transaction.timestamp|timesince|slice:'0:2' == '0 ' %}bg-green-50{% endif %}">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    <span title="{{ transaction.timestamp }}">{{ transaction.timestamp|timesince }} ago</span>
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap">
+                    {% if transaction.transaction_type == 'checkin' %}
+                    <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                        Check In
+                    </span>
+                    {% elif transaction.transaction_type == 'checkout' %}
+                    <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                        Check Out
+                    </span>
+                    {% else %}
+                    <span
+                        class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-gray-100 text-gray-800">
+                        {{ transaction.transaction_type|title }}
+                    </span>
+                    {% endif %}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {{ transaction.weapon.weapon_model }} - {{ transaction.weapon.serial_number }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                    {{ transaction.personnel.rank }} {{ transaction.personnel.first_name }} {{
+                    transaction.personnel.last_name }}
+                </td>
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{ transaction.verified_by }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="py-10 text-center text-gray-500">
+    <p>No transactions recorded yet.</p>
+</div>
+{% endif %}
