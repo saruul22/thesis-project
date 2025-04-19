@@ -15,17 +15,18 @@ import logging
 import uuid
 import io
 from django.utils.html import mark_safe
+from unfold.admin import ModelAdmin
 
 
 logger = logging.getLogger(__name__)
 face_recognition = FaceRecognition()
 
-class RegimentAdmin(admin.ModelAdmin):
+class RegimentAdmin(ModelAdmin):
     list_display = ('regiment_id', 'regiment_type')
     search_fields = ('regiment_id', 'regiment_type')
 
 
-class PersonnelAdmin(admin.ModelAdmin):
+class PersonnelAdmin(ModelAdmin):
     list_display = ('id_number', 'first_name', 'last_name', 'rank', 'regiment', 'active_status', 'has_face_registered', 'has_weapon')
     search_fields = ('id_number', 'first_name', 'last_name', 'rank', 'regiment')
     list_filter = ('rank', 'regiment', 'active_status')
@@ -109,7 +110,7 @@ class PersonnelAdmin(admin.ModelAdmin):
             
         super().save_model(request, obj, form, change)
 
-class WeaponAdmin(admin.ModelAdmin):
+class WeaponAdmin(ModelAdmin):
     list_display = ('serial_number', 'weapon_model', 'status', 'assigned_to', 'display_qr_code')
     list_filter = ('status', 'weapon_model')
     search_fields = ('serial_number', 'bolt_number', 'case_number')

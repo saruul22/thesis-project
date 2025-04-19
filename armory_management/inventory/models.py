@@ -4,36 +4,42 @@ import segno
 import uuid
 
 class Regiment(models.Model):
-    regiment_id = models.CharField(max_length=2, primary_key=True,)
+    regiment_id = models.CharField(max_length=2, primary_key=True, verbose_name="Салбар нэгжийн дугаар")
     regiment_type = models.CharField(max_length=30, unique=True, choices=[
         ('Танк', 'Танкын Баталион'),
         ('Артилери', 'Артилерийн Дивизион'),
         ('Мотобуудлага', 'Мотобуудлагын Баталион'),
-    ])
+    ], verbose_name="Салбар нэгж")
+
+    class Meta:
+        verbose_name = "Салбар нэгж"
+        verbose_name_plural = "Салбар нэгжүүд"
 
 class Personnel(models.Model):
-    id_number = models.CharField(max_length=3, unique=True)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
+    id_number = models.CharField(max_length=3, unique=True, verbose_name="Алба хаагчийн дугаар")
+    first_name = models.CharField(max_length=100, verbose_name="Алба хаагчийнн нэр")
+    last_name = models.CharField(max_length=100, verbose_name="Алба хаагчийн овог")
     rank = models.CharField(max_length=20, choices=[
         ('Б/ч', 'Байлдагч'),
         ('А/б', 'Ахлах Байлдагч'),
         ('Д/т', 'Дэд Түрүүч'),
         ('Т/ч', 'Түрүүч'),
         ('А/т', 'Ахлах Түрүүч'),
-    ], default='Б/ч')
+    ], default='Б/ч', verbose_name="Цол")
     regiment = models.ForeignKey(Regiment,
                                  on_delete=models.PROTECT,
-                                 related_name='personnel')
+                                 related_name='personnel',
+                                 verbose_name="Салбар нэгж")
     face_encoding = models.BinaryField(null=True, blank=True)
-    active_status = models.BooleanField(default=True, help_text="Whether this personnel is currently active in service")
-    registration_date = models.DateTimeField(auto_now_add=True)
+    active_status = models.BooleanField(default=True, verbose_name="Алба хааж байгаа төлөв")
+    registration_date = models.DateTimeField(auto_now_add=True, verbose_name="Бүртгэсэн огноо")
     
     def __str__(self):
         return f"{self.rank} {self.first_name} {self.last_name} ({self.id_number})"
     
     class Meta:
-        verbose_name_plural = "Personnel"
+        verbose_name = "Алба хаагч"
+        verbose_name_plural = "Алба хаагчид"
         ordering = ['last_name', 'first_name']
 
 class Weapon(models.Model):
@@ -43,16 +49,16 @@ class Weapon(models.Model):
     weapon_model = models.CharField(max_length=10, choices=[
         ('АКМ', 'Автомат'),
         ('АКС', 'Автомат'),
-        ('СВД', ''),
-        ('ПКТ', ''),
-    ])
+        ('СВД', 'Дурантай буу'),
+        ('ПКТ', 'Пулемёт'),
+    ], verbose_name="Бууны загвар")
     qr_code = models.CharField(max_length=200, unique=True, blank=True, null=True)
     status = models.CharField(max_length=20, choices=[
-        ('available', 'Available'),
-        ('assigned', 'Assigned'),
-        ('maintenance', 'In Maintenance'),
-        ('decommissioned', 'Decommissioned'),
-    ], default='available')
+        ('available', 'Идвэхитэй'),
+        ('assigned', 'Хариуцагчтай'),
+        ('maintenance', 'Засварт байгаа'),
+        ('decommissioned', 'Ашиглагдахаа больсон'),
+    ], default='available', verbose_name="Төлөв")
     assigned_to = models.OneToOneField(
         Personnel, 
         on_delete=models.SET_NULL, 
@@ -60,8 +66,8 @@ class Weapon(models.Model):
         blank=True, 
         related_name='assigned_weapon'
     )
-    acquisition_date = models.DateField(null=True, blank=True)
-    last_maintenance_date = models.DateField(null=True, blank=True)
+    acquisition_date = models.DateField(null=True, blank=True, verbose_name="Олгосон огноо")
+    last_maintenance_date = models.DateField(null=True, blank=True, verbose_name="Засварт орсон огноо")
     notes = models.TextField(blank=True, null=True)
     LOCATION_CHOICES = [
         ('in', 'Хадгалагдасан'),
@@ -82,11 +88,11 @@ class Weapon(models.Model):
             unique_id = str(uuid.uuid4()).replace('-', '')
             self.qr_code = f"WPN-{self.serial_number}-{unique_id[:12]}"
 
-        # Update status based on assignment
+        # buund hariutsagch onooson bol 'assigned' bolno
         if self.assigned_to:
             self.status = 'assigned'
         elif self.status == 'assigned':
-            # If no longer assigned but status wasn't manually changed
+            # buu ezemshigchgui tohioldold tuluv n 'available' bolnl
             self.status = 'available'
         
         super().save(*args, **kwargs)

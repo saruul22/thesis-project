@@ -11,12 +11,13 @@ from django.utils.html import format_html
 import cv2
 import numpy as np
 import logging
+from unfold.admin import ModelAdmin
 
 logger = logging.getLogger(__name__)
 face_recognition = FaceRecognition()
 
 @admin.register(FaceRecord)
-class FaceRecordAdmin(admin.ModelAdmin):
+class FaceRecordAdmin(ModelAdmin):
     list_display = ('personnel_id', 'has_embedding', 'face_image_display', 'registration_date', 'is_active')
     list_filter = ('is_active', 'registration_date')
     search_fields = ('personnel_id',)
@@ -38,7 +39,7 @@ class FaceRecordAdmin(admin.ModelAdmin):
     face_image_display.short_description = 'Face Image'
 
 @admin.register(AuthenticationLog)
-class AuthenticationLogAdmin(admin.ModelAdmin):
+class AuthenticationLogAdmin(ModelAdmin):
     list_display = ('personnel_id', 'timestamp', 'result', 'confidence_score', 'ip_address')
     list_filter = ('result', 'timestamp')
     search_fields = ('personnel_id', 'ip_address')
@@ -54,7 +55,7 @@ class AuthenticationLogAdmin(admin.ModelAdmin):
         return False
 
 @admin.register(WeaponTransaction)
-class WeaponTransactionAdmin(admin.ModelAdmin):
+class WeaponTransactionAdmin(ModelAdmin):
     list_display = ('transaction_type', 'weapon', 'personnel', 'timestamp', 'verified_by')
     list_filter = ('transaction_type', 'timestamp')
     search_fields = ('weapon__serial_number', 'personnel__id_number', 'personnel__id_number', 'personnel__last_name')
@@ -70,7 +71,7 @@ class WeaponTransactionAdmin(admin.ModelAdmin):
     )
 
 @admin.register(FaceRegistrationLog)
-class FaceRegistrationLogAdmin(admin.ModelAdmin):
+class FaceRegistrationLogAdmin(ModelAdmin):
     list_display = ('personnel', 'timestamp', 'registered_by', 'successful')
     list_filter = ('successful', 'timestamp')
     search_fields = ('personnel__id_number', 'personnel__last_name', 'registered_by')

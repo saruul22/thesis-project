@@ -8,9 +8,9 @@ import uuid
 
 class WeaponTransaction(models.Model):
     TRANSACTION_TYPES = [
-        ('checkout', 'Check Out'),
-        ('checkin', 'Check In'),
-        ('reassign', 'Reassignment'),
+        ('checkout', 'Гарсан'),
+        ('checkin', 'Орсон'),
+        ('reassign', 'Дахин хуваарилсан'),
     ]
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -24,12 +24,12 @@ class WeaponTransaction(models.Model):
         on_delete=models.CASCADE,
         related_name='transactions'
     )
-    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES)
-    timestamp = models.DateTimeField(default=timezone.now)
-    face_confidence_score = models.FloatField(null=True, blank=True)
+    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES, verbose_name="Төрөл")
+    timestamp = models.DateTimeField(default=timezone.now, verbose_name="Огноо")
+    face_confidence_score = models.FloatField(null=True, blank=True, verbose_name="Царай танилтын оноо")
     verified_by = models.CharField(max_length=100, blank=True, null=True, 
-                                  help_text="Admin user who verified this transaction")
-    notes = models.TextField(blank=True, null=True)
+                                  help_text="Оролт, гаралтыг хянасан хүн", verbose_name="Хянагч")
+    notes = models.TextField(blank=True, null=True, verbose_name="Тэмдэглэл")
     auth_log = models.ForeignKey('AuthenticationLog', on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):
@@ -37,8 +37,8 @@ class WeaponTransaction(models.Model):
     
     class Meta:
         ordering = ['-timestamp']
-        verbose_name = "Weapon Transaction"
-        verbose_name_plural = "Weapon Transactions"
+        verbose_name = "Оролт гаралтын бүртгэл"
+        verbose_name_plural = "Оролт гаралтын бүртгэлүүд"
 
     def save(self, *args, **kwargs):
         # Get the current assignment to verify it doesn't change for checkin/checkout
