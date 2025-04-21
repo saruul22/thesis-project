@@ -42,58 +42,6 @@ class PersonnelAdmin(ModelAdmin):
             return False
     has_weapon.boolean = True
     
-    def get_urls(self):
-        urls = super().get_urls()
-        custom_urls = [
-            path(
-                '<int:personnel_id>/register-face/',
-                self.admin_site.admin_view(self.register_face_view),
-                name='register-face',
-            ),
-            path(
-                'api/capture-face/',
-                self.admin_site.admin_view(self.capture_face),
-                name='capture-face',
-            ),
-        ]
-        return custom_urls + urls
-    
-    def register_face_view(self, request, personnel_id):
-        personnel = Personnel.objects.get(id=personnel_id)
-        context = {
-            'title': f'Register Face for {personnel}',
-            'personnel': personnel,
-            'opts': self.model._meta,
-        }
-        return render(request, 'admin/inventory/personnel/register_face.html', context)
-    
-    def capture_face(self, request):
-        if request.method == 'POST':
-            try:
-                # This would capture from camera or receive uploaded image
-                cap = cv2.VideoCapture(0)
-                ret, frame = cap.read()
-                cap.release()
-                
-                if not ret:
-                    return JsonResponse({'success': False, 'error': 'Failed to capture camera feed'})
-                
-                # Process with ArcFace
-                face_encoding = face_recognition.detect_and_encode_face(frame)
-                
-                if face_encoding is None:
-                    return JsonResponse({'success': False, 'error': 'No face detected'})
-                
-                # Save the encoding to session for later use
-                request.session['face_encoding'] = face_encoding.tolist()
-                
-                return JsonResponse({'success': True})
-            except Exception as e:
-                logger.error(f"Error capturing face: {e}")
-                return JsonResponse({'success': False, 'error': str(e)})
-        
-        return JsonResponse({'success': False, 'error': 'Invalid request method'})
-    
     def save_model(self, request, obj, form, change):
         if 'face_encoding' in request.session:
             face_encoding = np.array(request.session['face_encoding'])
@@ -125,10 +73,9 @@ class WeaponAdmin(ModelAdmin):
     assigned_to_display.short_description = "Assigned To"
     
     def reassign_weapons(self, request, queryset):
-        # This action would provide a form to reassign weapons
-        # from outgoing to incoming personnel
+        # Buug dahij uur hund huvaarilah
         if 'apply' in request.POST:
-            # Process the reassignment
+            # reassignment
             weapon_ids = request.POST.getlist('_selected_action')
             personnel_ids = request.POST.getlist('personnel')
             

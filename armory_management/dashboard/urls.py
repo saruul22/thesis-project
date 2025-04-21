@@ -10,4 +10,9 @@ urlpatterns = [
     path('widgets/face-records-count/', views.face_records_count, name='face_records_count'),
     path('widgets/transaction-logs/', views.transaction_logs, name='transaction_logs'),
     path('events/transactions/', views.transaction_sse, name='transaction_sse'),
+
+    path('export/csv/', views.export_transactions_csv, name='export_csv'),
+    path('export/excel/', views.export_transactions_excel, name='export_excel'),
+    path('export/pdf/', views.export_transactions_pdf, name='export_pdf'),
+    path('reports/', views.reports, name='reports'),
 ]

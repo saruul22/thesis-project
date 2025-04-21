@@ -4,6 +4,7 @@ import json
 import time
 from inventory.models import Personnel, Weapon
 from face_authentication.models import WeaponTransaction, FaceRecord
+from .export import export_transactions_csv, export_transactions_excel, export_transactions_pdf
 
 def index(request):
     """Main dashboard view"""
@@ -49,10 +50,25 @@ def face_records_count(request):
 
 def transaction_logs(request):
     """Widget for transaction logs"""
-    transactions = WeaponTransaction.objects.select_related('weapon', 'personnel').order_by('-timestamp')[:20]
+    transactions = WeaponTransaction.objects.select_related('weapon', 'personnel').order_by('-timestamp')
+
+    # Apply date filters if provided
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+
+    if start_date:
+        transactions = transactions.filter(timestamp__date__gte=start_date)
+
+    if end_date:
+        transactions = transactions.filter(timestamp__date__lte=end_date)
+
+    # Paginate if needed
+    transactions = transactions[:20]
     
     return render(request, 'dashboard/widgets/transaction_logs.html', {
-        'transactions': transactions
+        'transactions': transactions,
+        'start_date': start_date,
+        'end_date': end_date
     })
 
 def transaction_sse(request):
@@ -84,3 +100,32 @@ def transaction_sse(request):
     response['Cache-Control'] = 'no-cache'
     response['X-Accel-Buffering'] = 'no'  # Disable buffering for Nginx
     return response
+
+def reports(request):
+    # Transaction report page filtertei bas exporttoi hamt
+    transactions = WeaponTransaction.objects.select_related('weapon', 'personnel').order_by('-timestamp')
+
+    # Filteree oruulna
+    start_date = request.GET.get('start_date')
+    end_date = request.GET.get('end_date')
+    transaction_type = request.GET.get('transaction_type')
+
+    if start_date:
+        transactions = transactions.filter(timestamp__date__gte=start_date)
+
+    if end_date:
+        transactions = transactions.filter(timestamp__date__lte=end_date)
+
+    if transaction_type:
+        transactions = transactions.filter(transaction_type=transaction_type)
+
+    transaction_count = transactions.count()
+
+    return render(request, 'dashboard/reports.html', {
+        'transactions': transactions,
+        'transaction_count': transaction_count,
+        'start_date': start_date,
+        'end_date': end_date,
+        'transaction_type': transaction_type
+    })
+

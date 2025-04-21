@@ -559,6 +559,7 @@ class FaceAuthClientApp:
             self.qr_scanned = False
             self.qr_data = None
             self.personnel_id = None
+            self.transaction_completed = False
             self.qr_status_label.config(text="Step 1: Scan Weapon QR Code", foreground="black")
             self.face_status_label.config(text="Step 2: Face Verification (waiting)", foreground="gray")
             self.weapon_info_label.config(text="No weapon scanned")
@@ -641,7 +642,7 @@ class FaceAuthClientApp:
                                 # Get weapon and personnel info from server
                                 self.get_weapon_and_personnel_info(self.qr_data)
 
-                    elif self.personnel_id and not hasattr(self, 'verification_in_progress'):
+                    elif self.personnel_id and not hasattr(self, 'verification_in_progress') and not self.transaction_completed:
                         # Initialize frame counter if not exists
                         if not hasattr(self, 'frame_counter'):
                             self.frame_counter = 0
@@ -894,6 +895,7 @@ class FaceAuthClientApp:
 
                         # Schedule auto-reset after successful transaction
                         self.root.after(3000, self.auto_reset_for_next_transaction)
+                        self.transaction_completed = True
                     else:
                         self.auth_result_label.config(
                             text=f"TRANSACTION FAILED: {result.get('message', '')}", 
@@ -929,6 +931,7 @@ class FaceAuthClientApp:
         self.qr_scanned = False
         self.qr_data = None
         self.personnel_id = None
+        self.transaction_completed = False
         
         self.qr_status_label.config(text="Step 1: Scan Weapon QR Code", foreground="black")
         self.weapon_info_label.config(text="No weapon scanned")

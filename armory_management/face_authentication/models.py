@@ -41,21 +41,17 @@ class WeaponTransaction(models.Model):
         verbose_name_plural = "Оролт гаралтын бүртгэлүүд"
 
     def save(self, *args, **kwargs):
-        # Get the current assignment to verify it doesn't change for checkin/checkout
         original_assignemnt = None
         if self.weapon.pk and (self.transaction_type in ['checkin', 'checkout']):
             original_assignemnt = Weapon.objects.get(pk=self.weapon.pk).assigned_to
 
-        # Only 'reassign' transactions should update weapon assignment
         if self.transaction_type == 'reassign':
-            # Update the weapon's assigned personnel
             self.weapon.assigned_to = self.pesronnel
             self.weapon.save()
     
         # Save the transaction
         super().save(*args, **kwargs)
 
-        # Verify assignment didn't change if this was a checkin/checkout
         if original_assignemnt is not None:
             current_assignment = Weapon.objects.get(pk=self.weapon.pk).assigned_to
             if original_assignemnt != current_assignment:
@@ -65,7 +61,7 @@ class FaceRegistrationLog(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     personnel = models.ForeignKey(Personnel, on_delete=models.CASCADE, related_name='face_registrations')
     timestamp = models.DateTimeField(auto_now_add=True)
-    registration_time = models.DateTimeField(auto_now_add=True)  # for backward compatibility
+    registration_time = models.DateTimeField(auto_now_add=True)
     registered_by = models.CharField(max_length=100, blank=True, null=True)
     successful = models.BooleanField(default=True)
     error_message = models.TextField(blank=True, null=True)
@@ -77,7 +73,7 @@ class FaceRegistrationLog(models.Model):
         ordering = ['-timestamp']
 
 class FaceRecord(models.Model):
-    """Model to store face recognition data"""
+    """Tsarainii ugugdliig hadgalah model"""
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     personnel_id = models.CharField(max_length=20, unique=True)
     face_embedding = models.BinaryField(null=True, blank=True)

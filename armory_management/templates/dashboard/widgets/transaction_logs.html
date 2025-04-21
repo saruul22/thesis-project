@@ -1,5 +1,37 @@
 {% if transactions %}
 <div class="overflow-x-auto">
+    <!-- <form class="mb-4 flex items-end gap-2" method="GET" action="{% url 'dashboard:transaction_logs' %}">
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Эхлэх</label>
+            <input type="date" name="start_date" value="{{ request.GET.start_date }}"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+        </div>
+        <div>
+            <label class="block text-sm font-medium text-gray-700">Хүртэл</label>
+            <input type="date" name="end_date" value="{{ request.GET.end_date }}"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
+        </div>
+
+        <button type="submit" class="py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700">Шүүх</button>
+        <a href="{% url 'dashboard:transaction_logs' %}"
+            class="py-2 px-4 bg-gray-500 text-white rounded-md hover:bg-gray-600">Reset</a>
+    </form> -->
+
+
+    <div class="flex justify-end mb-4 gap-2">
+        <a href="{% url 'dashboard:export_csv' %}?{{ request.GET.urlencode }}"
+            class="px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 text-sm">
+            <span>Export CSV</span>
+        </a>
+        <a href="{% url 'dashboard:export_excel' %}?{{ request.GET.urlencode }}"
+            class="px-3 py-1 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm">
+            <span>Export Excel</span>
+        </a>
+        <a href="{% url 'dashboard:export_pdf' %}?{{ request.GET.urlencode }}"
+            class="px-3 py-1 bg-red-500 text-white rounded hover:bg-red-600 text-sm">
+            <span>Export PDF</span>
+        </a>
+    </div>
     <table class="min-w-full divide-y divide-gray-200">
         <thead class="bg-gray-50">
             <tr>
@@ -41,8 +73,8 @@
                     {{ transaction.weapon.weapon_model }} - {{ transaction.weapon.serial_number }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                    {{ transaction.personnel.rank }} {{ transaction.personnel.first_name }} {{
-                    transaction.personnel.last_name }}
+                    {{ transaction.personnel.rank }} {{ transaction.personnel.first_name }}
+                    {{ transaction.personnel.last_name }}
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                     {{ transaction.verified_by }}
