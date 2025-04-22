@@ -24,7 +24,7 @@ except ImportError:
 class FaceAuthClientApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Weapon System Authentication")
+        self.root.title("Галт зэвсгийн оролт, гаралтын бүртгэл")
         self.root.geometry("1000x700")
         self.root.resizable(True, True)
         
@@ -111,7 +111,7 @@ class FaceAuthClientApp:
         main_frame.pack(fill=tk.BOTH, expand=True)
         
         # Title
-        title_label = ttk.Label(main_frame, text="Weapon System Authentication", font=("Arial", 18, "bold"))
+        title_label = ttk.Label(main_frame, text="Галт зэвсгийн оролт, гаралтын бүртгэл", font=("Arial", 18, "bold"))
         title_label.pack(pady=10)
         
         # Create tabs
@@ -121,8 +121,8 @@ class FaceAuthClientApp:
         register_tab = ttk.Frame(tab_control)
         settings_tab = ttk.Frame(tab_control)
         
-        tab_control.add(authentication_tab, text="Authentication")
-        tab_control.add(register_tab, text="Register Face")
+        tab_control.add(authentication_tab, text="Баталгаажуулалт")
+        tab_control.add(register_tab, text="Царайны бүртгэл")
         tab_control.add(settings_tab, text="Settings")
         
         tab_control.pack(expand=True, fill=tk.BOTH)
@@ -199,14 +199,14 @@ class FaceAuthClientApp:
         #               value="check_out").pack(side=tk.LEFT, padx=10)
         
         # Authentication status
-        status_frame = ttk.LabelFrame(right_panel, text="Authentication Status", padding="10")
+        status_frame = ttk.LabelFrame(right_panel, text="Төлөв", padding="10")
         status_frame.pack(fill=tk.BOTH, expand=True, pady=10)
         
         # QR status
-        self.qr_status_label = ttk.Label(status_frame, text="Step 1: Scan Weapon QR Code", font=("Arial", 12))
+        self.qr_status_label = ttk.Label(status_frame, text="1: QR код уншуулна", font=("Arial", 12))
         self.qr_status_label.pack(pady=5)
         
-        self.weapon_info_label = ttk.Label(status_frame, text="No weapon scanned")
+        self.weapon_info_label = ttk.Label(status_frame, text="QR уншигдаагүй байна")
         self.weapon_info_label.pack(pady=5)
         
         # Personnel info from QR code
@@ -214,7 +214,7 @@ class FaceAuthClientApp:
         self.personnel_info_label.pack(pady=5)
         
         # Face verification status
-        self.face_status_label = ttk.Label(status_frame, text="Step 2: Face Verification (waiting)", font=("Arial", 12))
+        self.face_status_label = ttk.Label(status_frame, text="2: Царайны баталгаажуулалт (waiting)", font=("Arial", 12))
         self.face_status_label.pack(pady=5)
         
         self.face_result_label = ttk.Label(status_frame, text="")
@@ -265,24 +265,24 @@ class FaceAuthClientApp:
         reg_id_frame = ttk.Frame(right_panel)
         reg_id_frame.pack(fill=tk.X, pady=10)
         
-        ttk.Label(reg_id_frame, text="Personnel ID:").pack(side=tk.LEFT)
+        ttk.Label(reg_id_frame, text="Алба хаагчын дугаар:").pack(side=tk.LEFT)
         
         self.reg_id_var = tk.StringVar()
         reg_id_entry = ttk.Entry(reg_id_frame, textvariable=self.reg_id_var)
         reg_id_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
         
         # Registration status
-        status_frame = ttk.LabelFrame(right_panel, text="Registration Status", padding="10")
+        status_frame = ttk.LabelFrame(right_panel, text="Бүртгэлийн төлөв", padding="10")
         status_frame.pack(fill=tk.BOTH, expand=True, pady=10)
         
-        self.reg_status_label = ttk.Label(status_frame, text="Not registered", font=("Arial", 14))
+        self.reg_status_label = ttk.Label(status_frame, text="Бүртгэгдээгүй", font=("Arial", 14))
         self.reg_status_label.pack(pady=10)
         
         self.reg_info_label = ttk.Label(status_frame, text="")
         self.reg_info_label.pack(pady=5)
         
         # Register button
-        self.register_btn = ttk.Button(right_panel, text="Register Face", command=self.register_face, state=tk.DISABLED)
+        self.register_btn = ttk.Button(right_panel, text="Царай бүртгэх", command=self.register_face, state=tk.DISABLED)
         self.register_btn.pack(pady=10, fill=tk.X)
     
     def setup_settings_tab(self, parent):

@@ -16,7 +16,11 @@ import uuid
 import io
 from django.utils.html import mark_safe
 from unfold.admin import ModelAdmin
+from django.contrib.auth.models import Group, User
+from django.contrib.auth.admin import UserAdmin
+from rest_framework.authtoken.models import Token
 
+admin.site.unregister(Group)
 
 logger = logging.getLogger(__name__)
 face_recognition = FaceRecognition()

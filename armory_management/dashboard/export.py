@@ -113,13 +113,22 @@ def export_transactions_pdf(request):
     doc = SimpleDocTemplate(buffer, pagesize=landscape(letter))
     elements = []
 
+    from reportlab.pdfbase import pdfmetrics
+    from reportlab.pdfbase.ttfonts import TTFont
+
+    pdfmetrics.registerFont(TTFont('DejaVuSans', '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf'))
+
     # Define styles
     styles = getSampleStyleSheet()
     title_style = styles['Heading1']
+    title_style.fontName = 'DejaVuSans'
+
+    normal_style = styles['Normal']
+    normal_style.fontName = 'DejaVuSans'
 
     # Add title
     elements.append(Paragraph("Weapon Transactions Report", title_style))
-    elements.append(Paragraph(f"Generated on: {datetime.date.today()}", styles['Normal']))
+    elements.append(Paragraph(f"Generated on: {datetime.date.today()}", normal_style))
 
     # Transaction data avah
     transactions = WeaponTransaction.objects.select_related('weapon', 'personnel').order_by('-timestamp')
@@ -134,7 +143,7 @@ def export_transactions_pdf(request):
         transactions = transactions.filter(timestamp__date__lte=end_date)
 
     # Create table data
-    data = [['Transaction ID', 'Date/Time', 'Type', 'Weapon', 'Personnel', 'Verified By']]
+    data = [['Transaction ID', 'Огноо', 'Төрөл', 'Галт зэвсэг', 'Алба хаагч', 'Хянасан']]
 
     # Add data rows
     for transaction in transactions:
@@ -155,13 +164,13 @@ def export_transactions_pdf(request):
         ('BACKGROUND', (0, 0), (-1, 0), colors.blue),
         ('TEXTCOLOR', (0, 0), (-1, 0), colors.whitesmoke),
         ('ALIGN', (0, 0), (-1, 0), 'CENTER'),
-        ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+        ('FONTNAME', (0, 0), (-1, 0), 'DejaVuSans'),
         ('FONTSIZE', (0, 0), (-1, 0), 12),
         ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
         ('BACKGROUND', (0, 1), (-1, -1), colors.white),
         ('GRID', (0, 0), (-1, -1), 1, colors.black),
         ('ALIGN', (0, 0), (-1, -1), 'LEFT'),
-        ('FONTNAME', (0, 1), (-1, -1), 'Helvetica'),
+        ('FONTNAME', (0, 1), (-1, -1), 'DejaVuSans'),
         ('FONTSIZE', (0, 1), (-1, -1), 10),
         ('VALIGN', (0, 0), (-1, -1), 'MIDDLE'),
     ])
