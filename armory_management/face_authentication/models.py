@@ -3,20 +3,21 @@ from django.db import models
 from inventory.models import Personnel, Weapon
 from django.utils import timezone
 from django.conf import settings
+from django.utils.translation import gettext_lazy as _
 import os
 import uuid
-
+ 
 class WeaponTransaction(models.Model):
     TRANSACTION_TYPES = [
-        ('checkout', 'Гарсан'),
-        ('checkin', 'Орсон'),
-        ('reassign', 'Дахин хуваарилсан'),
+        ('checkout', _('Гарсан')),
+        ('checkin', _('Орсон')),
+        ('reassign', _('Дахин хуваарилсан')),
     ]
     
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     personnel = models.ForeignKey(
-        Personnel, 
-        on_delete=models.CASCADE, 
+        Personnel,
+        on_delete=models.CASCADE,
         related_name='transactions'
     )
     weapon = models.ForeignKey(
@@ -24,12 +25,12 @@ class WeaponTransaction(models.Model):
         on_delete=models.CASCADE,
         related_name='transactions'
     )
-    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES, verbose_name="Төрөл")
-    timestamp = models.DateTimeField(default=timezone.now, verbose_name="Огноо")
-    face_confidence_score = models.FloatField(null=True, blank=True, verbose_name="Царай танилтын оноо")
-    verified_by = models.CharField(max_length=100, blank=True, null=True, 
-                                  help_text="Оролт, гаралтыг хянасан хүн", verbose_name="Хянагч")
-    notes = models.TextField(blank=True, null=True, verbose_name="Тэмдэглэл")
+    transaction_type = models.CharField(max_length=20, choices=TRANSACTION_TYPES, verbose_name=_("Төрөл"))
+    timestamp = models.DateTimeField(default=timezone.now, verbose_name=_("Огноо"))
+    face_confidence_score = models.FloatField(null=True, blank=True, verbose_name=_("Царай танилтын оноо"))
+    verified_by = models.CharField(max_length=100, blank=True, null=True,
+                                  help_text="Оролт, гаралтыг хянасан хүн", verbose_name=_("Хянагч"))
+    notes = models.TextField(blank=True, null=True, verbose_name=_("Тэмдэглэл"))
     auth_log = models.ForeignKey('AuthenticationLog', on_delete=models.SET_NULL, null=True, blank=True)
     
     def __str__(self):

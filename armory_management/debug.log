@@ -37650,3 +37650,474 @@ django.template.exceptions.TemplateDoesNotExist: dashboard/widgets/face_records_
 "GET /admin/ HTTP/1.1" 200 46031
 "GET /admin/auth/user/ HTTP/1.1" 200 48400
 "GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 3221
+Not Found: /favicon.ico
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /favicon.ico HTTP/1.1" 404 3006
+Internal Server Error: /dashboard/widgets/face-records-count/
+Traceback (most recent call last):
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/armory_management/dashboard/views.py", line 46, in face_records_count
+    return render(request, 'dashboard/widgets/face_records_count.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/widgets/face_records_count.html
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 229
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 936
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 500 94479
+"GET /admin HTTP/1.1" 301 0
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 10743
+"GET /static/unfold/css/simplebar/simplebar.css HTTP/1.1" 200 4647
+"GET /static/unfold/fonts/inter/styles.css HTTP/1.1" 200 608
+"GET /static/unfold/fonts/material-symbols/styles.css HTTP/1.1" 200 535
+"GET /static/unfold/js/htmx/htmx.js HTTP/1.1" 200 50918
+"GET /static/unfold/css/styles.css HTTP/1.1" 200 162977
+"GET /static/unfold/js/chart/chart.js HTTP/1.1" 200 200633
+"GET /static/unfold/js/app.js HTTP/1.1" 200 7748
+"GET /static/unfold/js/simplebar/simplebar.js HTTP/1.1" 200 27176
+"GET /static/unfold/js/alpine/alpine.persist.js HTTP/1.1" 200 837
+"GET /static/unfold/js/alpine/alpine.anchor.js HTTP/1.1" 200 15524
+"GET /static/unfold/js/alpine/alpine.resize.js HTTP/1.1" 200 703
+"GET /static/unfold/js/alpine/alpine.sort.js HTTP/1.1" 200 37891
+"GET /static/unfold/js/alpine/alpine.js HTTP/1.1" 200 44758
+"GET /static/unfold/fonts/inter/Inter-SemiBold.woff2 HTTP/1.1" 200 114812
+"GET /static/unfold/fonts/inter/Inter-Regular.woff2 HTTP/1.1" 200 111268
+"GET /static/unfold/fonts/inter/Inter-Medium.woff2 HTTP/1.1" 200 114348
+"GET /static/unfold/fonts/material-symbols/Material-Symbols-Outlined.woff2 HTTP/1.1" 200 274228
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 36534
+Watching for file changes with StatReloader
+"GET /admin/ HTTP/1.1" 200 36602
+"GET /static/unfold/fonts/inter/styles.css HTTP/1.1" 304 0
+"GET /static/unfold/fonts/material-symbols/styles.css HTTP/1.1" 304 0
+"GET /static/unfold/css/styles.css HTTP/1.1" 304 0
+"GET /static/unfold/js/htmx/htmx.js HTTP/1.1" 304 0
+"GET /static/unfold/js/simplebar/simplebar.js HTTP/1.1" 304 0
+"GET /static/unfold/js/app.js HTTP/1.1" 304 0
+"GET /static/unfold/css/simplebar/simplebar.css HTTP/1.1" 304 0
+"GET /static/unfold/js/chart/chart.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.persist.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.anchor.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.sort.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.resize.js HTTP/1.1" 304 0
+"GET /static/unfold/fonts/inter/Inter-SemiBold.woff2 HTTP/1.1" 304 0
+"GET /static/unfold/fonts/inter/Inter-Regular.woff2 HTTP/1.1" 304 0
+"GET /static/unfold/fonts/material-symbols/Material-Symbols-Outlined.woff2 HTTP/1.1" 304 0
+"GET /admin/inventory/regiment/ HTTP/1.1" 200 31389
+"GET /static/admin/js/jquery.init.js HTTP/1.1" 200 347
+"GET /static/admin/js/actions.js HTTP/1.1" 200 8076
+"GET /static/admin/js/core.js HTTP/1.1" 200 6208
+"GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 200 9048
+"GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 200 285314
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/prepopulate.js HTTP/1.1" 200 1531
+"GET /static/admin/js/urlify.js HTTP/1.1" 200 7887
+"GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 200 325171
+"GET /static/unfold/fonts/inter/Inter-Medium.woff2 HTTP/1.1" 304 0
+"GET /admin/inventory/regiment/add/ HTTP/1.1" 200 31468
+"GET /static/admin/js/prepopulate_init.js HTTP/1.1" 200 586
+"GET /static/admin/js/change_form.js HTTP/1.1" 200 606
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+/home/saruul/thesis-project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET /admin/inventory/regiment/add/ HTTP/1.1" 200 31468
+"GET /static/unfold/fonts/inter/styles.css HTTP/1.1" 304 0
+"GET /static/unfold/css/styles.css HTTP/1.1" 304 0
+"GET /static/unfold/fonts/material-symbols/styles.css HTTP/1.1" 304 0
+"GET /static/unfold/css/simplebar/simplebar.css HTTP/1.1" 304 0
+"GET /static/unfold/js/chart/chart.js HTTP/1.1" 304 0
+"GET /static/unfold/js/htmx/htmx.js HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/jquery/jquery.js HTTP/1.1" 304 0
+"GET /static/admin/js/jquery.init.js HTTP/1.1" 304 0
+"GET /static/admin/js/core.js HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /static/admin/js/admin/RelatedObjectLookups.js HTTP/1.1" 304 0
+"GET /static/admin/js/actions.js HTTP/1.1" 304 0
+"GET /static/admin/js/urlify.js HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate.js HTTP/1.1" 304 0
+"GET /static/admin/js/vendor/xregexp/xregexp.js HTTP/1.1" 304 0
+"GET /static/unfold/js/app.js HTTP/1.1" 304 0
+"GET /static/admin/js/prepopulate_init.js HTTP/1.1" 304 0
+"GET /static/unfold/js/simplebar/simplebar.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.persist.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.resize.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.sort.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.anchor.js HTTP/1.1" 304 0
+"GET /static/admin/js/change_form.js HTTP/1.1" 304 0
+"GET /static/unfold/fonts/material-symbols/Material-Symbols-Outlined.woff2 HTTP/1.1" 304 0
+"GET /static/unfold/fonts/inter/Inter-Regular.woff2 HTTP/1.1" 304 0
+"GET /static/unfold/fonts/inter/Inter-SemiBold.woff2 HTTP/1.1" 304 0
+"GET /static/unfold/fonts/inter/Inter-Medium.woff2 HTTP/1.1" 304 0
+"GET /admin/inventory/regiment/ HTTP/1.1" 200 31389
+"GET /admin/ HTTP/1.1" 200 36602
+"GET /admin/inventory/weapon/ HTTP/1.1" 200 38430
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+"GET /admin/inventory/weapon/add/ HTTP/1.1" 200 45437
+"GET /static/admin/js/calendar.js HTTP/1.1" 200 9141
+"GET /static/admin/js/admin/DateTimeShortcuts.js HTTP/1.1" 200 19319
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+/home/saruul/thesis-project/armory_management/inventory/models.py changed, reloading.
+Watching for file changes with StatReloader
+"GET /admin/inventory/weapon/add/ HTTP/1.1" 200 45450
+"GET /admin/jsi18n/ HTTP/1.1" 200 3342
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+/home/saruul/thesis-project/armory_management/armory_management/settings.py changed, reloading.
+Watching for file changes with StatReloader
+Watching for file changes with StatReloader
+"GET / HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 3221
+Not Found: /favicon.ico
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /favicon.ico HTTP/1.1" 404 3006
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 936
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 229
+Internal Server Error: /dashboard/widgets/face-records-count/
+Traceback (most recent call last):
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/armory_management/dashboard/views.py", line 46, in face_records_count
+    return render(request, 'dashboard/widgets/face_records_count.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/widgets/face_records_count.html
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 500 90075
+Not Found: /dashboard/admin
+"GET /dashboard/admin HTTP/1.1" 404 5667
+"GET /admin HTTP/1.1" 301 0
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 10806
+"GET /static/unfold/fonts/material-symbols/styles.css HTTP/1.1" 200 535
+"GET /static/unfold/fonts/inter/styles.css HTTP/1.1" 200 608
+"GET /static/unfold/css/styles.css HTTP/1.1" 200 162977
+"GET /static/unfold/css/simplebar/simplebar.css HTTP/1.1" 200 4647
+"GET /static/unfold/js/app.js HTTP/1.1" 200 7748
+"GET /static/unfold/js/simplebar/simplebar.js HTTP/1.1" 200 27176
+"GET /static/unfold/js/htmx/htmx.js HTTP/1.1" 200 50918
+"GET /static/unfold/js/chart/chart.js HTTP/1.1" 200 200633
+"GET /static/unfold/js/alpine/alpine.anchor.js HTTP/1.1" 200 15524
+"GET /static/unfold/js/alpine/alpine.persist.js HTTP/1.1" 200 837
+"GET /static/unfold/js/alpine/alpine.resize.js HTTP/1.1" 200 703
+"GET /static/unfold/js/alpine/alpine.sort.js HTTP/1.1" 200 37891
+"GET /static/unfold/js/alpine/alpine.js HTTP/1.1" 200 44758
+"GET /static/unfold/fonts/inter/Inter-Regular.woff2 HTTP/1.1" 200 111268
+"GET /static/unfold/fonts/inter/Inter-SemiBold.woff2 HTTP/1.1" 200 114812
+"GET /static/unfold/fonts/inter/Inter-Medium.woff2 HTTP/1.1" 200 114348
+"GET /static/unfold/fonts/material-symbols/Material-Symbols-Outlined.woff2 HTTP/1.1" 200 274228
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 36602
+"GET /admin/inventory/ HTTP/1.1" 200 28222
+"GET /admin/ HTTP/1.1" 200 36602
+Watching for file changes with StatReloader
+"GET /admin/ HTTP/1.1" 200 36602
+"GET /admin/ HTTP/1.1" 200 36602
+Watching for file changes with StatReloader
+"GET /admin/ HTTP/1.1" 200 36602
+"GET /admin/ HTTP/1.1" 200 36602
+"GET /admin/ HTTP/1.1" 200 36602
+"GET /admin/inventory/ HTTP/1.1" 200 28222
+"GET /admin/ HTTP/1.1" 200 36602
+"GET / HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 3221
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 229
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 936
+Internal Server Error: /dashboard/widgets/face-records-count/
+Traceback (most recent call last):
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/armory_management/dashboard/views.py", line 46, in face_records_count
+    return render(request, 'dashboard/widgets/face_records_count.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/widgets/face_records_count.html
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 500 90842
+Watching for file changes with StatReloader
+"GET /admin/ HTTP/1.1" 200 36706
+Watching for file changes with StatReloader
+"GET /admin/ HTTP/1.1" 200 36706
+Watching for file changes with StatReloader
+"GET /admin/ HTTP/1.1" 200 36706
+"GET /admin/ HTTP/1.1" 200 36706
+"POST /admin/logout/ HTTP/1.1" 200 5569
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 10806
+Watching for file changes with StatReloader
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 10851
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 37065
+"GET / HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 3221
+Not Found: /favicon.ico
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 936
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 229
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /favicon.ico HTTP/1.1" 404 3006
+Internal Server Error: /dashboard/widgets/face-records-count/
+Traceback (most recent call last):
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/armory_management/dashboard/views.py", line 46, in face_records_count
+    return render(request, 'dashboard/widgets/face_records_count.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/widgets/face_records_count.html
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 500 90991
+"GET /dashboard/reports/ HTTP/1.1" 200 4122
+"GET /dashboard/ HTTP/1.1" 200 3221
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 229
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 936
+Internal Server Error: /dashboard/widgets/face-records-count/
+Traceback (most recent call last):
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/armory_management/dashboard/views.py", line 46, in face_records_count
+    return render(request, 'dashboard/widgets/face_records_count.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/widgets/face_records_count.html
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 500 90842
+"GET /dashboard/reports/ HTTP/1.1" 200 4122
+"GET /dashboard/ HTTP/1.1" 200 3221
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 229
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 936
+Internal Server Error: /dashboard/widgets/face-records-count/
+Traceback (most recent call last):
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/armory_management/dashboard/views.py", line 46, in face_records_count
+    return render(request, 'dashboard/widgets/face_records_count.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/widgets/face_records_count.html
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 500 90842
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 229
+Internal Server Error: /dashboard/widgets/face-records-count/
+Traceback (most recent call last):
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/armory_management/dashboard/views.py", line 46, in face_records_count
+    return render(request, 'dashboard/widgets/face_records_count.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/widgets/face_records_count.html
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 936
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 500 90842
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 229
+Internal Server Error: /dashboard/widgets/face-records-count/
+Traceback (most recent call last):
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/armory_management/dashboard/views.py", line 46, in face_records_count
+    return render(request, 'dashboard/widgets/face_records_count.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/widgets/face_records_count.html
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 936
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 500 90842
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 229
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 936
+Internal Server Error: /dashboard/widgets/face-records-count/
+Traceback (most recent call last):
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/armory_management/dashboard/views.py", line 46, in face_records_count
+    return render(request, 'dashboard/widgets/face_records_count.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/widgets/face_records_count.html
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 500 90842
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"POST /admin/logout/ HTTP/1.1" 200 5614
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 229
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 936
+Internal Server Error: /dashboard/widgets/face-records-count/
+Traceback (most recent call last):
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/armory_management/dashboard/views.py", line 46, in face_records_count
+    return render(request, 'dashboard/widgets/face_records_count.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/widgets/face_records_count.html
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 500 90842
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 10851
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET / HTTP/1.1" 302 0
+"GET /dashboard/ HTTP/1.1" 200 3221
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 229
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 936
+Internal Server Error: /dashboard/widgets/face-records-count/
+Traceback (most recent call last):
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/armory_management/dashboard/views.py", line 46, in face_records_count
+    return render(request, 'dashboard/widgets/face_records_count.html', {
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/shortcuts.py", line 25, in render
+    content = loader.render_to_string(template_name, context, request, using=using)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 61, in render_to_string
+    template = get_template(template_name, using=using)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/template/loader.py", line 19, in get_template
+    raise TemplateDoesNotExist(template_name, chain=chain)
+django.template.exceptions.TemplateDoesNotExist: dashboard/widgets/face_records_count.html
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 500 90842
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 95
+"GET /admin/ HTTP/1.1" 302 0
+"GET /admin/login/?next=/admin/ HTTP/1.1" 200 10851
+"GET /static/unfold/fonts/inter/styles.css HTTP/1.1" 304 0
+"GET /static/unfold/fonts/material-symbols/styles.css HTTP/1.1" 304 0
+"GET /static/unfold/js/htmx/htmx.js HTTP/1.1" 304 0
+"GET /static/unfold/css/styles.css HTTP/1.1" 304 0
+"GET /static/unfold/js/chart/chart.js HTTP/1.1" 304 0
+"GET /static/unfold/css/simplebar/simplebar.css HTTP/1.1" 304 0
+"GET /static/unfold/js/app.js HTTP/1.1" 304 0
+"GET /static/unfold/js/simplebar/simplebar.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.anchor.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.persist.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.sort.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.resize.js HTTP/1.1" 304 0
+"GET /static/unfold/js/alpine/alpine.js HTTP/1.1" 304 0
+"GET /static/unfold/fonts/inter/Inter-SemiBold.woff2 HTTP/1.1" 304 0
+"GET /static/unfold/fonts/inter/Inter-Regular.woff2 HTTP/1.1" 304 0
+"GET /static/unfold/fonts/material-symbols/Material-Symbols-Outlined.woff2 HTTP/1.1" 304 0
+"GET /static/unfold/fonts/inter/Inter-Medium.woff2 HTTP/1.1" 304 0
+"POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+"GET /admin/ HTTP/1.1" 200 37065

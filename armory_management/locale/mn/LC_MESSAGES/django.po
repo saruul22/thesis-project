@@ -1,0 +1,436 @@
+# locale/mn/LC_MESSAGES/django.po
+msgid ""
+msgstr ""
+"Project-Id-Version: 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-05 15:15+0800\n"
+"Language: mn\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: armory_management/urls.py:8
+msgid "Зэвсгийн өрөөний удирдлагын систем"
+msgstr ""
+
+#: armory_management/urls.py:9
+msgid "Зэвсгийн өрөөний менежмент"
+msgstr ""
+
+#: armory_management/urls.py:10
+msgid "Системд тавтай морил"
+msgstr ""
+
+#: face_authentication/models.py:12 inventory/models.py:76
+msgid "Гарсан"
+msgstr ""
+
+#: face_authentication/models.py:13
+msgid "Орсон"
+msgstr ""
+
+#: face_authentication/models.py:14
+msgid "Дахин хуваарилсан"
+msgstr ""
+
+#: face_authentication/models.py:28
+msgid "Төрөл"
+msgstr ""
+
+#: face_authentication/models.py:29
+msgid "Огноо"
+msgstr ""
+
+#: face_authentication/models.py:30
+msgid "Царай танилтын оноо"
+msgstr ""
+
+#: face_authentication/models.py:32
+msgid "Хянагч"
+msgstr ""
+
+#: face_authentication/models.py:33 inventory/models.py:73
+msgid "Тэмдэглэл"
+msgstr ""
+
+#: inventory/models.py:8
+msgid "Салбар нэгжийн дугаар"
+msgstr ""
+
+#: inventory/models.py:10
+msgid "Танкын Баталион"
+msgstr ""
+
+#: inventory/models.py:11
+msgid "Артилерийн Дивизион"
+msgstr ""
+
+#: inventory/models.py:12
+msgid "Мотобуудлагын Баталион"
+msgstr ""
+
+#: inventory/models.py:13 inventory/models.py:16 inventory/models.py:33
+msgid "Салбар нэгж"
+msgstr ""
+
+#: inventory/models.py:17
+msgid "Салбар нэгжүүд"
+msgstr ""
+
+#: inventory/models.py:20
+msgid "Алба хаагчийн дугаар"
+msgstr ""
+
+#: inventory/models.py:21
+msgid "Алба хаагчийнн нэр"
+msgstr ""
+
+#: inventory/models.py:22
+msgid "Алба хаагчийн овог"
+msgstr ""
+
+#: inventory/models.py:24
+msgid "Байлдагч"
+msgstr ""
+
+#: inventory/models.py:25
+msgid "Ахлах Байлдагч"
+msgstr ""
+
+#: inventory/models.py:26
+msgid "Дэд Түрүүч"
+msgstr ""
+
+#: inventory/models.py:27
+msgid "Түрүүч"
+msgstr ""
+
+#: inventory/models.py:28
+msgid "Ахлах Түрүүч"
+msgstr ""
+
+#: inventory/models.py:29
+msgid "Цол"
+msgstr ""
+
+#: inventory/models.py:34
+msgid "Царайны өгөгдөл"
+msgstr ""
+
+#: inventory/models.py:35
+msgid "Алба хааж байгаа төлөв"
+msgstr ""
+
+#: inventory/models.py:36
+msgid "Бүртгэсэн огноо"
+msgstr ""
+
+#: inventory/models.py:42
+msgid "Алба хаагч"
+msgstr ""
+
+#: inventory/models.py:43
+msgid "Алба хаагчид"
+msgstr ""
+
+#: inventory/models.py:47
+msgid "Серийн дугаар"
+msgstr ""
+
+#: inventory/models.py:48
+msgid "Замгийн дугаар"
+msgstr ""
+
+#: inventory/models.py:49
+msgid "Хайрцаг ангийн тагны дугаар"
+msgstr ""
+
+#: inventory/models.py:51
+msgid "Автомат"
+msgstr ""
+
+#: inventory/models.py:52
+msgid "Эвхдэг автомат"
+msgstr ""
+
+#: inventory/models.py:53
+msgid "Дурантай буу"
+msgstr ""
+
+#: inventory/models.py:54
+msgid "Пулемёт"
+msgstr ""
+
+#: inventory/models.py:55
+msgid "Бууны загвар"
+msgstr ""
+
+#: inventory/models.py:56
+msgid "QR код"
+msgstr ""
+
+#: inventory/models.py:58
+msgid "Идвэхитэй"
+msgstr ""
+
+#: inventory/models.py:59
+msgid "Хариуцагчтай"
+msgstr ""
+
+#: inventory/models.py:60
+msgid "Засварт байгаа"
+msgstr ""
+
+#: inventory/models.py:61
+msgid "Актлагдсан"
+msgstr ""
+
+#: inventory/models.py:62
+msgid "Төлөв"
+msgstr ""
+
+#: inventory/models.py:69
+msgid "Хариуцагч"
+msgstr ""
+
+#: inventory/models.py:71
+msgid "Олгосон огноо"
+msgstr ""
+
+#: inventory/models.py:72
+msgid "Засварт орсон огноо"
+msgstr ""
+
+#: inventory/models.py:75
+msgid "Хадгалагдасан"
+msgstr ""
+
+#: inventory/models.py:83
+msgid "Галт зэвсгийн байршил"
+msgstr ""
+
+# Django Admin Interface
+msgid "Django administration"
+msgstr "Системийн удирдлага"
+
+msgid "Django site admin"
+msgstr "Сайтын админ"
+
+msgid "Site administration"
+msgstr "Сайтын удирдлага"
+
+msgid "Log in"
+msgstr "Нэвтрэх"
+
+msgid "Log out"
+msgstr "Гарах"
+
+msgid "Change password"
+msgstr "Нууц үг солих"
+
+msgid "Welcome,"
+msgstr "Тавтай морил,"
+
+msgid "View site"
+msgstr "Сайт үзэх"
+
+msgid "Documentation"
+msgstr "Баримт бичиг"
+
+msgid "Recent actions"
+msgstr "Сүүлийн үйлдлүүд"
+
+msgid "My actions"
+msgstr "Миний үйлдлүүд"
+
+msgid "None available"
+msgstr "Байхгүй"
+
+msgid "Add"
+msgstr "Нэмэх"
+
+msgid "Change"
+msgstr "Өөрчлөх"
+
+msgid "Delete"
+msgstr "Устгах"
+
+msgid "Save"
+msgstr "Хадгалах"
+
+msgid "Save and add another"
+msgstr "Хадгалаад шинээр нэмэх"
+
+msgid "Save and continue editing"
+msgstr "Хадгалаад үргэлжлүүлэн засах"
+
+msgid "Save as new"
+msgstr "Шинээр хадгалах"
+
+msgid "Delete selected %(verbose_name_plural)s"
+msgstr "Сонгосон %(verbose_name_plural)s устгах"
+
+msgid "Search"
+msgstr "Хайх"
+
+msgid "Filter"
+msgstr "Шүүлтүүр"
+
+msgid "Clear all filters"
+msgstr "Бүх шүүлтүүрийг арилгах"
+
+msgid "Show all"
+msgstr "Бүгдийг харуулах"
+
+msgid "Yes"
+msgstr "Тийм"
+
+msgid "No"
+msgstr "Үгүй"
+
+msgid "Unknown"
+msgstr "Тодорхойгүй"
+
+msgid "Any date"
+msgstr "Дурын огноо"
+
+msgid "Today"
+msgstr "Өнөөдөр"
+
+msgid "Past 7 days"
+msgstr "Сүүлийн 7 хоног"
+
+msgid "This month"
+msgstr "Энэ сар"
+
+msgid "This year"
+msgstr "Энэ жил"
+
+# Model translations
+msgid "Personnel"
+msgstr "Алба хаагч"
+
+msgid "Personnels"
+msgstr "Алба хаагчид"
+
+msgid "Weapon"
+msgstr "Галт зэвсэг"
+
+msgid "Weapons"
+msgstr "Галт зэвсгүүд"
+
+msgid "Face Record"
+msgstr "Царайны бүртгэл"
+
+msgid "Face Records"
+msgstr "Царайны бүртгэлүүд"
+
+msgid "Authentication Log"
+msgstr "Баталгаажуулалтын түүх"
+
+msgid "Authentication Logs"
+msgstr "Баталгаажуулалтын түүхүүд"
+
+msgid "Weapon Transaction"
+msgstr "Галт зэвсгийн оролт гаралт"
+
+msgid "Weapon Transactions"
+msgstr "Галт зэвсгийн оролт гаралтууд"
+
+msgid "Face Registration Log"
+msgstr "Царай бүртгэлийн түүх"
+
+msgid "Face Registration Logs"
+msgstr "Царай бүртгэлийн түүхүүд"
+
+# Specific actions and messages
+msgid "Successfully registered face for personnel"
+msgstr "Алба хаагчийн царайг амжилттай бүртгэлээ"
+
+msgid "Error registering face"
+msgstr "Царай бүртгэхэд алдаа гарлаа"
+
+msgid "Face encoding saved successfully"
+msgstr "Царайны код амжилттай хадгалагдлаа"
+
+msgid "Generate QR Code"
+msgstr "QR код үүсгэх"
+
+msgid "Successfully generated QR code"
+msgstr "QR код амжилттай үүсгэгдлээ"
+
+msgid "Has Face Registered"
+msgstr "Царай бүртгэгдсэн эсэх"
+
+msgid "Has Weapon"
+msgstr "Галт зэвсэгтэй эсэх"
+
+msgid "Check In"
+msgstr "Орсон"
+
+msgid "Check Out"
+msgstr "Гарсан"
+
+msgid "Transfer"
+msgstr "Шилжүүлсэн"
+
+msgid "Maintenance"
+msgstr "Засварт"
+
+msgid "Active"
+msgstr "Идэвхтэй"
+
+msgid "Inactive"
+msgstr "Идэвхгүй"
+
+msgid "Available"
+msgstr "Боломжтой"
+
+msgid "Assigned"
+msgstr "Хуваарилсан"
+
+msgid "In Maintenance"
+msgstr "Засварт байгаа"
+
+msgid "Decommissioned"
+msgstr "Ашиглалтаас гарсан"
+
+msgid "Success"
+msgstr "Амжилттай"
+
+msgid "Failure"
+msgstr "Амжилтгүй"
+
+msgid "Error"
+msgstr "Алдаа"
+
+# Auth Token section
+msgid "Auth Token"
+msgstr "Нэвтрэх токен"
+
+msgid "Tokens"
+msgstr "Токенууд"
+
+# Authentication section
+msgid "Authentication and Authorization"
+msgstr "Нэвтрэлт ба зөвшөөрөл"
+
+msgid "Users"
+msgstr "Хэрэглэгчид"
+
+msgid "Face_Authentication"
+msgstr "Царайгаар баталгаажуулалт"
+
+msgid "Authentication logs"
+msgstr "Нэвтрэлтийн бүртгэл"
+
+msgid "Face records"
+msgstr "Царайны бүртгэл"
+
+msgid "Face registration logs"
+msgstr "Царай бүртгэлийн түүх"
+
+# Inventory section
+msgid "Inventory"
+msgstr "Агуулах"
+

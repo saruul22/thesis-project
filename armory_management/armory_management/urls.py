@@ -3,10 +3,11 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic.base import RedirectView
+from django.utils.translation import gettext_lazy as _
 
-admin.site.site_header = "Military Armory Management System"
-admin.site.site_title = "Armory Management"
-admin.site.index_title = "Welcome to Armory Management System"
+admin.site.site_header = _("Зэвсгийн өрөөний удирдлагын систем")
+admin.site.site_title = _("Зэвсгийн өрөөний менежмент")
+admin.site.index_title = _("Системд тавтай морил")
 
 urlpatterns = [
     path('', RedirectView.as_view(url='dashboard/', permanent=False)),
