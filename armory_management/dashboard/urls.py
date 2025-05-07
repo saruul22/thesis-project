@@ -15,4 +15,8 @@ urlpatterns = [
     path('export/excel/', views.export_transactions_excel, name='export_excel'),
     path('export/pdf/', views.export_transactions_pdf, name='export_pdf'),
     path('reports/', views.reports, name='reports'),
+
+    path('charts/weapon-status/', views.weapon_status_chart, name='weapon_status_chart'),
+    path('weapon-charts/', views.weapon_charts, name='weapon_charts'),
+    path('widgets/chart-refresher/', views.chart_refresher, name='chart_refresher'),
 ]

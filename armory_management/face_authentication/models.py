@@ -72,6 +72,8 @@ class FaceRegistrationLog(models.Model):
     
     class Meta:
         ordering = ['-timestamp']
+        verbose_name = "Царайны бүртгэлийн лог"
+        verbose_name_plural = "Царайны бүртгэлийн лог"
 
 class FaceRecord(models.Model):
     """Tsarainii ugugdliig hadgalah model"""
@@ -104,6 +106,12 @@ class FaceRecord(models.Model):
         self.face_image_path = os.path.join('face_images', filename)
         self.save(update_fields=['face_image_path'])
 
+    class Meta:
+        db_table = ''
+        managed = True
+        verbose_name = 'Царайны бүртгэл'
+        verbose_name_plural = 'Царайны бүртгэл'
+
 class AuthenticationLog(models.Model):
     """Model to log face authentication attempts"""
     RESULT_CHOICES = [
@@ -126,4 +134,5 @@ class AuthenticationLog(models.Model):
     
     class Meta:
         ordering = ['-timestamp']
+        verbose_name = "Баталгаажуулалтын лог"
 

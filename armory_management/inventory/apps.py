@@ -7,3 +7,12 @@ class InventoryConfig(AppConfig):
     name = 'inventory'
     verbose_name = _('Зэвсэг хадгалалт')
 
+    def ready(self):
+        import django.contrib.admin as admin
+        from rest_framework.authtoken.models import Token
+        
+        try:
+            admin.site.unregister(Token)
+        except admin.sites.NotRegistered:
+            pass
+

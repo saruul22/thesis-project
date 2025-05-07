@@ -104,3 +104,9 @@ class Weapon(models.Model):
         if self.qr_code:
             return segno.make(self.qr_code)
         return None
+    
+    class Meta:
+        db_table = ''
+        managed = True
+        verbose_name = 'Галт зэвсэг'
+        verbose_name_plural = 'Галт зэвсэг'

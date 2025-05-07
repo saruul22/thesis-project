@@ -1,0 +1,82 @@
+<!-- dashboard/templates/dashboard/weapon_charts.html -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6" hx-ext="json-enc">
+    <div class="bg-white p-4 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Weapon Status</h3>
+        <div>
+            <canvas id="weaponStatusChart" width="400" height="300"></canvas>
+        </div>
+    </div>
+
+    <div class="bg-white p-4 rounded-lg shadow">
+        <h3 class="text-lg font-semibold text-gray-700 mb-2">Weapon Location</h3>
+        <div>
+            <canvas id="weaponLocationChart" width="400" height="300"></canvas>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Initialize the charts after the content is swapped by HTMX
+    document.addEventListener('htmx:afterSwap', function (event) {
+        if (event.target.id === 'weapon-charts') {
+            fetchAndInitializeCharts();
+        }
+    });
+
+    // Function to fetch data and initialize charts
+    function fetchAndInitializeCharts() {
+        fetch('{% url "dashboard:weapon_status_chart" %}')
+            .then(response => response.json())
+            .then(data => {
+                initCharts(data);
+            })
+            .catch(error => {
+                console.error('Error fetching chart data:', error);
+            });
+    }
+
+    // Function to initialize charts with data
+    function initCharts(data) {
+        // Status Chart
+        new Chart(
+            document.getElementById('weaponStatusChart'),
+            {
+                type: 'pie',
+                data: data.status_data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            }
+        );
+
+        // Location Chart
+        new Chart(
+            document.getElementById('weaponLocationChart'),
+            {
+                type: 'pie',
+                data: data.location_data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            }
+        );
+    }
+
+    // If the charts are immediately visible (not loaded via HTMX), initialize them directly
+    if (document.getElementById('weaponStatusChart')) {
+        fetchAndInitializeCharts();
+    }
+</script>

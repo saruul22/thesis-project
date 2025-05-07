@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, StreamingHttpResponse
+from django.http import HttpResponse, StreamingHttpResponse, JsonResponse
 import json
 import time
 from inventory.models import Personnel, Weapon
@@ -129,3 +129,44 @@ def reports(request):
         'transaction_type': transaction_type
     })
 
+def weapon_status_chart(request):
+    # Get counts for different weapon statuses
+    total_weapons = Weapon.objects.count()
+    available_count = Weapon.objects.filter(status='available').count()
+    assigned_count = Weapon.objects.filter(status='assigned').count()
+    maintenance_count = Weapon.objects.filter(status='maintenance').count()
+    decommissioned_count = Weapon.objects.filter(status='decommissioned').count()
+
+    # Get counts for weapon locations
+    in_armory = Weapon.objects.filter(location='in').count()
+    in_field = Weapon.objects.filter(location='out').count()
+
+    # Prepare data for the charts
+    status_data = {
+        'labels': ['Бэлэн байгаа', 'Хуваарилагдсан', 'Засварт', 'Актлагдсан'],
+        'datasets': [{
+            'data': [available_count, assigned_count, maintenance_count, decommissioned_count],
+            'backgroundColor': ['#10B981', '#3B82F6', '#F59E0B', '#EF4444']
+        }]
+    }
+
+    location_data = {
+        'labels': ['Хадгалагдсан', 'Гарсан'],
+        'datasets': [{
+            'data': [in_armory, in_field],
+            'backgroundColor': ['#6366F1', '#F97316']
+        }]
+    }
+
+    return JsonResponse({
+        'status_data': status_data,
+        'location_data': location_data
+    })
+
+def weapon_charts(request):
+    return render(request, 'dashboard/weapon_charts.html')
+
+# dashboard/views.py (add this)
+def chart_refresher(request):
+    """Widget for auto-refreshing chart data"""
+    return render(request, 'dashboard/widgets/chart_data_refresher.html')

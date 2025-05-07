@@ -1,0 +1,29 @@
+<!-- dashboard/templates/dashboard/widgets/chart_data_refresher.html -->
+<script>
+    function refreshChartData() {
+        fetch('{% url "dashboard:weapon_status_chart" %}')
+            .then(response => response.json())
+            .then(data => {
+                // Find chart instances
+                const statusChart = Chart.getChart('weaponStatusChart');
+                const locationChart = Chart.getChart('weaponLocationChart');
+
+                if (statusChart) {
+                    statusChart.data.datasets[0].data = data.status_data.datasets[0].data;
+                    statusChart.update();
+                }
+
+                if (locationChart) {
+                    locationChart.data.datasets[0].data = data.location_data.datasets[0].data;
+                    locationChart.update();
+                }
+            })
+            .catch(error => {
+                console.error('Error refreshing chart data:', error);
+            });
+    }
+</script>
+
+<div class="text-center text-sm text-gray-500 mt-2" hx-trigger="every 30s" hx-swap="none"
+    hx-on::trigger="refreshChartData()">
+</div>

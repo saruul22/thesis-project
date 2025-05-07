@@ -38,21 +38,21 @@ class FaceRecordAdmin(ModelAdmin):
 
     face_image_display.short_description = 'Face Image'
 
-@admin.register(AuthenticationLog)
-class AuthenticationLogAdmin(ModelAdmin):
-    list_display = ('personnel_id', 'timestamp', 'result', 'confidence_score', 'ip_address')
-    list_filter = ('result', 'timestamp')
-    search_fields = ('personnel_id', 'ip_address')
-    readonly_fields = ('id', 'timestamp', 'personnel_id', 'result', 'confidence_score',
-                  'ip_address', 'device_info', 'error_message')
+# @admin.register(AuthenticationLog)
+# class AuthenticationLogAdmin(ModelAdmin):
+#     list_display = ('personnel_id', 'timestamp', 'result', 'confidence_score', 'ip_address')
+#     list_filter = ('result', 'timestamp')
+#     search_fields = ('personnel_id', 'ip_address')
+#     readonly_fields = ('id', 'timestamp', 'personnel_id', 'result', 'confidence_score',
+#                   'ip_address', 'device_info', 'error_message')
 
-    def has_add_permission(self, request):
-        """Disable adding logs manually"""
-        return False
+#     def has_add_permission(self, request):
+#         """Disable adding logs manually"""
+#         return False
     
-    def has_change_permission(self, request):
-        """Disable editing logs"""
-        return False
+#     def has_change_permission(self, request):
+#         """Disable editing logs"""
+#         return False
 
 @admin.register(WeaponTransaction)
 class WeaponTransactionAdmin(ModelAdmin):
@@ -70,17 +70,17 @@ class WeaponTransactionAdmin(ModelAdmin):
         }),
     )
 
-@admin.register(FaceRegistrationLog)
-class FaceRegistrationLogAdmin(ModelAdmin):
-    list_display = ('personnel', 'timestamp', 'registered_by', 'successful')
-    list_filter = ('successful', 'timestamp')
-    search_fields = ('personnel__id_number', 'personnel__last_name', 'registered_by')
-    readonly_fields = ('id', 'timestamp', 'personnel','registered_by', 'successful', 'error_message')
+# @admin.register(FaceRegistrationLog)
+# class FaceRegistrationLogAdmin(ModelAdmin):
+#     list_display = ('personnel', 'timestamp', 'registered_by', 'successful')
+#     list_filter = ('successful', 'timestamp')
+#     search_fields = ('personnel__id_number', 'personnel__last_name', 'registered_by')
+#     readonly_fields = ('id', 'timestamp', 'personnel','registered_by', 'successful', 'error_message')
 
-    def has_add_permission(self, request):
-        """Disable addmin logs automatically"""
-        return False
+#     def has_add_permission(self, request):
+#         """Disable addmin logs automatically"""
+#         return False
 
-    def has_change_permission(self, request, obj = None):
-        """Disable editing logs"""
-        return False
+#     def has_change_permission(self, request, obj = None):
+#         """Disable editing logs"""
+#         return False
