@@ -40929,3 +40929,244 @@ Method Not Allowed: /api/face/verify/
 "GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22625
 "GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
 "GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+Watching for file changes with StatReloader
+"POST /api/face/register/ HTTP/1.1" 200 126
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/ HTTP/1.1" 200 5885
+"GET /dashboard/widgets/chart-refresher/ HTTP/1.1" 200 1098
+"GET /dashboard/charts/weapon-status/ HTTP/1.1" 200 629
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /admin/face_authentication/ HTTP/1.1" 200 25868
+"GET /admin/ HTTP/1.1" 200 39621
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 714273
+"GET /admin/jsi18n/ HTTP/1.1" 200 11393
+Internal Server Error: /admin/inventory/personnel/
+Traceback (most recent call last):
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/core/handlers/base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 719, in wrapper
+    return self.admin_site.admin_view(view)(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/views/decorators/cache.py", line 80, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/contrib/admin/sites.py", line 246, in inner
+    return view(request, *args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/unfold/admin.py", line 84, in changelist_view
+    return super().changelist_view(request, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/unfold/mixins/action_model_admin.py", line 58, in changelist_view
+    return super().changelist_view(request, extra_context)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/utils/decorators.py", line 48, in _wrapper
+    return bound_method(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/utils/decorators.py", line 192, in _view_wrapper
+    result = _process_exception(request, e)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/utils/decorators.py", line 190, in _view_wrapper
+    response = view_func(request, *args, **kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 2024, in changelist_view
+    cl = self.get_changelist_instance(request)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 867, in get_changelist_instance
+    return ChangeList(
+           ^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/unfold/views.py", line 13, in __init__
+    super().__init__(request, *args, **kwargs)
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/contrib/admin/views/main.py", line 145, in __init__
+    self.queryset = self.get_queryset(request)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/contrib/admin/views/main.py", line 583, in get_queryset
+    qs, search_may_have_duplicates = self.model_admin.get_search_results(
+                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/contrib/admin/options.py", line 1242, in get_search_results
+    queryset = queryset.filter(models.Q.create(term_queries))
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 1481, in filter
+    return self._filter_or_exclude(False, args, kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 1499, in _filter_or_exclude
+    clone._filter_or_exclude_inplace(negate, args, kwargs)
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/db/models/query.py", line 1506, in _filter_or_exclude_inplace
+    self._query.add_q(Q(*args, **kwargs))
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1643, in add_q
+    clause, _ = self._add_q(q_object, can_reuse)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1675, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1500, in build_filter
+    return self._add_q(
+           ^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1675, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1500, in build_filter
+    return self._add_q(
+           ^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1675, in _add_q
+    child_clause, needed_inner = self.build_filter(
+                                 ^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1585, in build_filter
+    condition = self.build_lookup(lookups, col, value)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1406, in build_lookup
+    lhs = self.try_transform(lhs, lookup_name)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/saruul/thesis-project/.venv/lib/python3.12/site-packages/django/db/models/sql/query.py", line 1455, in try_transform
+    raise FieldError(
+django.core.exceptions.FieldError: Unsupported lookup 'icontains' for ForeignKey or join on the field not permitted.
+"GET /admin/inventory/personnel/?q=765 HTTP/1.1" 500 232743
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /admin/inventory/personnel/ HTTP/1.1" 200 714273
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /admin/ HTTP/1.1" 200 39621
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /admin/face_authentication/facerecord/ HTTP/1.1" 200 530354
+"GET /media/face_images/765_ba86bf4a621342409dc7e6852bfc15a9.jpg HTTP/1.1" 200 69977
+"GET /media/face_images/987_d6d737c00b794275a51200c4cb93f390.jpg HTTP/1.1" 200 90884
+"GET /admin/jsi18n/ HTTP/1.1" 200 11393
+"GET /media/face_images/890_0c4e3c2a2e544259acffd049c36ffbc7.jpg HTTP/1.1" 304 0
+"GET /admin/face_authentication/facerecord/?q=765 HTTP/1.1" 200 47182
+"GET /media/face_images/765_ba86bf4a621342409dc7e6852bfc15a9.jpg HTTP/1.1" 304 0
+"GET /admin/jsi18n/ HTTP/1.1" 200 11393
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /admin/face_authentication/facerecord/ HTTP/1.1" 200 530354
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+Personnel with ID 7 not found
+Not Found: /api/face/register/
+"POST /api/face/register/ HTTP/1.1" 404 48
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22571
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22558
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22558
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22558
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22558
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22558
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22545
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22556
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22556
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22555
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22567
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22568
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22568
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22568
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22568
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22568
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22568
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+Watching for file changes with StatReloader
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22557
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22557
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22557
+"POST /api/face/register/ HTTP/1.1" 200 126
+"POST /api/face/weapon/info/ HTTP/1.1" 200 275
+"POST /api/face/weapon/transaction/ HTTP/1.1" 200 318
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22551
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/ HTTP/1.1" 200 5885
+"GET /dashboard/widgets/chart-refresher/ HTTP/1.1" 200 1098
+"GET /dashboard/charts/weapon-status/ HTTP/1.1" 200 629
+"GET /dashboard/widgets/personnel-count/ HTTP/1.1" 200 167
+"GET /dashboard/widgets/face-records-count/ HTTP/1.1" 200 169
+"GET /dashboard/widgets/weapons-count/ HTTP/1.1" 200 941
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22551
+"GET /dashboard/widgets/transaction-logs/ HTTP/1.1" 200 22551

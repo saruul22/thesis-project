@@ -620,7 +620,14 @@ class FaceAuthClientApp:
         ttk.Label(reg_id_frame, text="Алба хаагчын дугаар:").pack(side=tk.LEFT)
         
         self.reg_id_var = tk.StringVar()
-        reg_id_entry = ttk.Entry(reg_id_frame, textvariable=self.reg_id_var, width=20)
+        validate_cmd = (self.root.register(self.validate_personnel_id), '%P')
+        reg_id_entry = ttk.Entry(
+            reg_id_frame,
+            textvariable=self.reg_id_var,
+            width=20,
+            validate="key",
+            validatecommand=validate_cmd
+        )
         reg_id_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
         
         # Preview image (if captured)
@@ -645,6 +652,13 @@ class FaceAuthClientApp:
                                      command=self.register_face, state=tk.DISABLED,
                                      style="Primary.TButton")
         self.register_btn.pack(pady=10, fill=tk.X)
+
+    def validate_personnel_id(self, new_value):
+        if new_value == "":
+            return True
+        if len(new_value) > 3:
+            return False
+        return new_value.isdigit()
     
     def setup_settings_tab(self, parent):
         """Setup the settings tab"""
@@ -1406,7 +1420,8 @@ class FaceAuthClientApp:
                     else:  # check_out
                         self.face_status_label.config(text="Step 2: Ready for assignment", foreground="blue")
                         # Ask for personnel ID for checkout
-                        personnel_id = simpledialog.askstring("Input", "Enter Personnel ID for weapon assignment:")
+                        # personnel_id = simpledialog.askstring("Input", "Enter Personnel ID for weapon assignment:")
+                        personnel_id = self.ask_personnel_id()
                         if personnel_id:
                             self.personnel_id = personnel_id
                             self.personnel_info_label.config(text=f"Personnel ID for assignment: {personnel_id}")
@@ -1425,6 +1440,49 @@ class FaceAuthClientApp:
             self.weapon_info_label.config(text=f"Error: {error_message}")
             messagebox.showerror("Error", error_message)
             self.reset_authentication()
+
+    def ask_personnel_id(self):
+        dialog = tk.Toplevel(self.root)
+        dialog.title("Personnel ID")
+        dialog.geometry("300x150")
+        dialog.transient(self.root)
+        dialog.grab_set()
+
+        dialog.update_idletasks()
+        x = self.root.winfo_x() + (self.root.winfo_width() - dialog.winfo_width()) // 2
+        y = self.root.winfo_y() + (self.root.winfo_height() - dialog.winfo_height()) // 2
+        dialog.geometry(f"+{x}+{y}")
+
+        ttk.Label(dialog, text="Enter Personnel ID (max 3 digits):").pack(pady=10)
+
+        personnel_id_var = tk.StringVar()
+        validate_cmd = (self.root.register(self.validate_personnel_id), '%P')
+        entry = ttk.Entry(
+            dialog,
+            textvariable=personnel_id_var,
+            validate="key",
+            validatecommand=validate_cmd,
+            width=10
+        )
+        entry.pack(pady=5)
+        entry.focus_set()
+
+        result = [None]
+        def on_ok():
+            result[0] = personnel_id_var.get()
+            dialog.destroy()
+
+        def on_cancel():
+            result[0] = None
+            dialog.destroy()
+
+        button_frame = ttk.Frame(dialog)
+        button_frame.pack(pady=10)
+        ttk.Button(button_frame, text="OK", command=on_ok).pack(side=tk.LEFT, padx=5)
+        ttk.Button(button_frame, text="Cancel", command=on_cancel).pack(side=tk.LEFT, padx=5)
+
+        self.root.wait_window(dialog)
+        return result[0]
     
     def capture_face_for_auth(self):
         """Capture face image for authentication"""
