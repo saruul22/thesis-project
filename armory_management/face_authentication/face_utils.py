@@ -1,7 +1,7 @@
 # face_authentication/face_utils.py
 import cv2
 import numpy as np
-import insightface  # You'll need to install this for ArcFace
+import insightface 
 from insightface.app import FaceAnalysis
 import logging
 

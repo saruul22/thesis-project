@@ -13,6 +13,7 @@ import configparser
 from datetime import datetime
 import threading
 import queue
+import math
 from pyzbar.pyzbar import decode as decode_qr
 
 # Import local ArcFace processor for offline mode
@@ -27,6 +28,9 @@ class FaceAuthClientApp:
         self.root.title("Галт зэвсгийн оролт, гаралтын бүртгэл")
         self.root.geometry("1000x700")
         self.root.resizable(True, True)
+        
+        # Setup style 
+        self.setup_style()
         
         # Load configuration
         self.config = self.load_config()
@@ -60,6 +64,9 @@ class FaceAuthClientApp:
                 "Local ArcFace processor not available. Please install dlib and its dependencies.")
             self.offline_mode = False
         
+        # Create header
+        self.create_header(self.root)
+        
         # Create UI
         self.create_ui()
         
@@ -73,6 +80,12 @@ class FaceAuthClientApp:
         self.task_queue = queue.Queue()
         self.worker_thread = threading.Thread(target=self.process_tasks, daemon=True)
         self.worker_thread.start()
+        
+        # Set up system tray
+        self.setup_system_tray()
+        
+        # Check connection
+        self.check_connection()
         
     def load_config(self):
         """Load configuration from config.ini file"""
@@ -103,7 +116,289 @@ class FaceAuthClientApp:
                 config.write(f)
                 
         return config
+    
+    def setup_style(self):
+        """Set up custom styling for the application"""
+        self.style = ttk.Style()
+
+        # Try to use a modern theme if available
+        try:
+            self.style.theme_use('clam')  # 'clam' is generally available and looks more modern
+        except tk.TclError:
+            pass  # Fall back to default if 'clam' is not available
         
+        # Define colors
+        bg_color = "#f5f5f5"
+        accent_color = "#3a7ebf"
+        success_color = "#5cb85c"
+        error_color = "#d9534f"
+        warning_color = "#f0ad4e"
+
+        # Configure general styles
+        self.style.configure('TFrame', background=bg_color)
+        self.style.configure('TLabel', background=bg_color, font=('Arial', 10))
+        self.style.configure('TButton', font=('Arial', 10), padding=6)
+        self.style.configure('TNotebook', background=bg_color)
+        self.style.configure('TNotebook.Tab', padding=[10, 5], font=('Arial', 10))
+
+        # Configure special styles
+        self.style.configure('Title.TLabel', font=('Arial', 18, 'bold'))
+        self.style.configure('Header.TLabel', font=('Arial', 12, 'bold'))
+        self.style.configure('Success.TLabel', foreground=success_color)
+        self.style.configure('Error.TLabel', foreground=error_color)
+        self.style.configure('Warning.TLabel', foreground=warning_color)
+
+        # Custom button styles
+        self.style.configure('Primary.TButton', background=accent_color)
+        self.style.configure('Success.TButton', background=success_color)
+        self.style.configure('Danger.TButton', background=error_color)
+
+        # Set window background
+        self.root.configure(background=bg_color)
+
+    def create_header(self, parent):
+        """Create a header with logo and title"""
+        header_frame = ttk.Frame(parent)
+        header_frame.pack(fill=tk.X, pady=10)
+
+        # Create logo (you can replace with an actual logo image)
+        logo_canvas = tk.Canvas(header_frame, width=60, height=60, bg="#f5f5f5", highlightthickness=0)
+        logo_canvas.pack(side=tk.LEFT, padx=20)
+
+        # Draw a simple logo
+        logo_canvas.create_oval(5, 5, 55, 55, fill="#3a7ebf", outline="")
+        logo_canvas.create_oval(15, 15, 45, 45, fill="#f5f5f5", outline="")
+        logo_canvas.create_oval(25, 25, 35, 35, fill="#3a7ebf", outline="")
+
+        # Add title
+        title_frame = ttk.Frame(header_frame)
+        title_frame.pack(side=tk.LEFT)
+
+        ttk.Label(title_frame, text="Галт зэвсгийн", style='Title.TLabel').pack(anchor=tk.W)
+        ttk.Label(title_frame, text="оролт, гаралтын бүртгэл", style='Title.TLabel').pack(anchor=tk.W)
+
+        # Connection status indicator
+        status_frame = ttk.Frame(header_frame)
+        status_frame.pack(side=tk.RIGHT, padx=20)
+
+        ttk.Label(status_frame, text="Холболт:").pack(side=tk.LEFT, padx=(0, 5))
+        self.connection_label = ttk.Label(status_frame, text="Холбогдоогүй")
+        self.connection_label.pack(side=tk.LEFT)
+
+    def create_history_tab(self, parent):
+        """Create a transaction history tab"""
+        frame = ttk.Frame(parent, padding="10")
+        frame.pack(fill=tk.BOTH, expand=True)
+
+        # Create header for this tab
+        header = ttk.Frame(frame)
+        header.pack(fill=tk.X, pady=(0, 10))
+
+        ttk.Label(header, text="Transaction History", style='Header.TLabel').pack(side=tk.LEFT)
+
+        # Refresh button
+        refresh_btn = ttk.Button(header, text="Refresh", command=self.refresh_history)
+        refresh_btn.pack(side=tk.RIGHT)
+
+        # Add search field
+        search_frame = ttk.Frame(frame)
+        search_frame.pack(fill=tk.X, pady=5)
+
+        ttk.Label(search_frame, text="Search:").pack(side=tk.LEFT, padx=(0, 5))
+
+        self.search_var = tk.StringVar()
+        search_entry = ttk.Entry(search_frame, textvariable=self.search_var, width=30)
+        search_entry.pack(side=tk.LEFT, padx=5)
+        search_entry.bind("<Return>", lambda e: self.search_history())
+
+        ttk.Button(search_frame, text="Search", command=self.search_history).pack(side=tk.LEFT, padx=5)
+
+        # Create treeview for transaction history
+        self.history_tree = ttk.Treeview(frame, columns=("timestamp", "weapon", "personnel", "type", "status"))
+        self.history_tree.pack(fill=tk.BOTH, expand=True, pady=5)
+
+        # Configure columns
+        self.history_tree.heading("#0", text="ID")
+        self.history_tree.heading("timestamp", text="Timestamp")
+        self.history_tree.heading("weapon", text="Weapon")
+        self.history_tree.heading("personnel", text="Personnel")
+        self.history_tree.heading("type", text="Type")
+        self.history_tree.heading("status", text="Status")
+
+        self.history_tree.column("#0", width=80)
+        self.history_tree.column("timestamp", width=150)
+        self.history_tree.column("weapon", width=150)
+        self.history_tree.column("personnel", width=150)
+        self.history_tree.column("type", width=100)
+        self.history_tree.column("status", width=100)
+
+        # Add scrollbar
+        scrollbar = ttk.Scrollbar(frame, orient="vertical", command=self.history_tree.yview)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.history_tree.configure(yscrollcommand=scrollbar.set)
+
+        # Initially load history
+        self.refresh_history()
+
+    def refresh_history(self):
+        """Refresh transaction history from server or local cache"""
+        # Clear existing items
+        for item in self.history_tree.get_children():
+            self.history_tree.delete(item)
+
+        # Show processing indicator
+        self.update_progress(10, "Loading history...")
+
+        # Use a background thread to avoid freezing UI
+        def load_history_task():
+            try:
+                # If offline, load from local cache
+                if self.offline_mode:
+                    # Example local cache (replace with actual implementation)
+                    transactions = self.load_local_history()
+                    return {
+                        'success': True,
+                        'transactions': transactions
+                    }
+
+                # Otherwise, get from server
+                headers = {'Content-Type': 'application/json'}
+                if self.api_token:
+                    headers['Authorization'] = f'Token {self.api_token}'
+
+                # Example API endpoint - adjust to match your backend
+                url = f"{self.api_base_url.rstrip('/')}/transactions/history/"
+
+                self.update_progress(30, "Requesting data...")
+
+                response = requests.get(url, headers=headers, timeout=10)
+
+                self.update_progress(70, "Processing data...")
+
+                if response.status_code == 200:
+                    result = response.json()
+                    transactions = result.get('transactions', [])
+
+                    # Save to local cache
+                    self.save_local_history(transactions)
+
+                    return {
+                        'success': True,
+                        'transactions': transactions
+                    }
+                else:
+                    return {
+                        'success': False,
+                        'error': f"API Error: {response.text}"
+                    }
+
+            except Exception as e:
+                return {
+                    'success': False,
+                    'error': str(e)
+                }
+
+        # Queue the task
+        self.task_queue.put((load_history_task, self.handle_history_result))
+
+    def handle_history_result(self, result):
+        """Handle the history loading result"""
+        if result['success']:
+            transactions = result.get('transactions', [])
+
+            # Add to treeview
+            for tx in transactions:
+                # Set row colors based on transaction type
+                if tx.get('type') == 'checkout':
+                    tag = 'checkout'
+                elif tx.get('type') == 'checkin':
+                    tag = 'checkin'
+                else:
+                    tag = 'other'
+
+                # Add transaction to treeview
+                self.history_tree.insert(
+                    "", "end", text=tx.get('id', ''),
+                    values=(
+                        tx.get('timestamp', ''),
+                        tx.get('weapon_info', {}).get('serial_number', 'Unknown'),
+                        tx.get('personnel_info', {}).get('name', 'Unknown'),
+                        tx.get('type', ''),
+                        tx.get('status', '')
+                    ),
+                    tags=(tag,)
+                )
+
+            # Configure row colors
+            self.history_tree.tag_configure('checkout', background='#ffeeee')
+            self.history_tree.tag_configure('checkin', background='#eeffee')
+
+            self.update_progress(100, f"Loaded {len(transactions)} transactions")
+
+        else:
+            messagebox.showerror("History Error", result['error'])
+            self.update_progress(0, "Failed to load history")
+
+        # Reset progress after a delay
+        self.root.after(2000, lambda: self.update_progress(0, "Ready"))
+
+    def search_history(self):
+        """Search transaction history"""
+        search_text = self.search_var.get().lower()
+
+        # Clear highlighting
+        for item in self.history_tree.get_children():
+            self.history_tree.item(item, tags=self.history_tree.item(item, "tags"))
+
+        if not search_text:
+            return
+
+        # Highlight matching items
+        matched = []
+        for item in self.history_tree.get_children():
+            values = self.history_tree.item(item, "values")
+            text = " ".join([str(v) for v in values]).lower()
+
+            if search_text in text:
+                matched.append(item)
+                # Add 'match' tag while preserving original tag
+                original_tags = self.history_tree.item(item, "tags")
+                combined_tags = list(original_tags) + ["match"]
+                self.history_tree.item(item, tags=combined_tags)
+
+        # Configure matched row style
+        self.history_tree.tag_configure('match', background='#ffffaa')
+
+        # Select first match
+        if matched:
+            self.history_tree.selection_set(matched[0])
+            self.history_tree.see(matched[0])
+            self.update_progress(0, f"Found {len(matched)} matches")
+        else:
+            self.update_progress(0, "No matches found")
+
+    def load_local_history(self):
+        """Load transaction history from local cache file"""
+        try:
+            cache_file = os.path.join(self.local_db_path, 'transaction_history.json')
+            if os.path.exists(cache_file):
+                with open(cache_file, 'r') as f:
+                    return json.load(f)
+            return []
+        except Exception as e:
+            print(f"Error loading local history: {e}")
+            return []
+
+    def save_local_history(self, transactions):
+        """Save transaction history to local cache file"""
+        try:
+            os.makedirs(self.local_db_path, exist_ok=True)
+            cache_file = os.path.join(self.local_db_path, 'transaction_history.json')
+            with open(cache_file, 'w') as f:
+                json.dump(transactions, f)
+        except Exception as e:
+            print(f"Error saving local history: {e}")
+
     def create_ui(self):
         """Create the UI elements"""
         # Main frame
@@ -150,130 +445,194 @@ class FaceAuthClientApp:
         self.check_connection()
     
     def setup_authentication_tab(self, parent):
-        """Setup the unified authentication tab"""
+        """Setup the unified authentication tab with improved layout"""
         frame = ttk.Frame(parent, padding="10")
         frame.pack(fill=tk.BOTH, expand=True)
-        
-        # Left panel (camera feed)
-        left_panel = ttk.Frame(frame)
-        left_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
-        
-        # Camera feed
-        self.auth_canvas = tk.Canvas(left_panel, bg="black", width=640, height=480)
-        self.auth_canvas.pack(pady=10)
-        
-        # Camera controls
-        camera_controls = ttk.Frame(left_panel)
-        camera_controls.pack(pady=10)
-        
-        self.auth_start_btn = ttk.Button(camera_controls, text="Start Authentication", 
-                                      command=lambda: self.start_camera(canvas=self.auth_canvas, mode="authentication"))
-        self.auth_start_btn.pack(side=tk.LEFT, padx=5)
-        
-        self.auth_stop_btn = ttk.Button(camera_controls, text="Stop", 
-                                     command=self.stop_camera, state=tk.DISABLED)
-        self.auth_stop_btn.pack(side=tk.LEFT, padx=5)
-        
-        # self.auth_capture_btn = ttk.Button(camera_controls, text="Capture Face", 
-        #                                 command=self.capture_face_for_auth, state=tk.DISABLED)
-        # self.auth_capture_btn.pack(side=tk.LEFT, padx=5)
-        
-        # Right panel (authentication info)
-        right_panel = ttk.Frame(frame)
-        right_panel.pack(side=tk.RIGHT, fill=tk.BOTH, padx=10)
-        
-        # Transaction type selection
-        transaction_frame = ttk.Frame(right_panel)
-        transaction_frame.pack(fill=tk.X, pady=10)
-        
-        ttk.Label(transaction_frame, text="Mode:").pack(side=tk.LEFT)
+
+        # Create header for this tab
+        header = ttk.Frame(frame)
+        header.pack(fill=tk.X, pady=(0, 10))
+
+        ttk.Label(header, text="Баталгаажуулалт", style='Header.TLabel').pack(side=tk.LEFT)
 
         self.transaction_type = tk.StringVar(value="auto")
-        self.transaction_mode_label = ttk.Label(transaction_frame, text="Auto (Detecting...)", foreground="blue")
+        mode_frame = ttk.Frame(header)
+        mode_frame.pack(side=tk.RIGHT)
+
+        ttk.Label(mode_frame, text="Горим:").pack(side=tk.LEFT)
+        self.transaction_mode_label = ttk.Label(mode_frame, text="Автомат (Илрүүлж байна...)")
         self.transaction_mode_label.pack(side=tk.LEFT, padx=10)
 
-        # self.transaction_type = tk.StringVar(value="check_in")
-        # ttk.Radiobutton(transaction_frame, text="Check In", variable=self.transaction_type, 
-        #               value="check_in").pack(side=tk.LEFT, padx=10)
-        # ttk.Radiobutton(transaction_frame, text="Check Out", variable=self.transaction_type, 
-        #               value="check_out").pack(side=tk.LEFT, padx=10)
-        
-        # Authentication status
-        status_frame = ttk.LabelFrame(right_panel, text="Төлөв", padding="10")
-        status_frame.pack(fill=tk.BOTH, expand=True, pady=10)
-        
-        # QR status
-        self.qr_status_label = ttk.Label(status_frame, text="1: QR код уншуулна", font=("Arial", 12))
-        self.qr_status_label.pack(pady=5)
-        
-        self.weapon_info_label = ttk.Label(status_frame, text="QR уншигдаагүй байна")
-        self.weapon_info_label.pack(pady=5)
-        
-        # Personnel info from QR code
-        self.personnel_info_label = ttk.Label(status_frame, text="")
-        self.personnel_info_label.pack(pady=5)
-        
-        # Face verification status
-        self.face_status_label = ttk.Label(status_frame, text="2: Царайны баталгаажуулалт (waiting)", font=("Arial", 12))
-        self.face_status_label.pack(pady=5)
-        
-        self.face_result_label = ttk.Label(status_frame, text="")
-        self.face_result_label.pack(pady=5)
-        
-        # Overall status
-        self.auth_result_label = ttk.Label(status_frame, text="", font=("Arial", 14, "bold"))
-        self.auth_result_label.pack(pady=10)
-        
+        # Main content area
+        content = ttk.Frame(frame)
+        content.pack(fill=tk.BOTH, expand=True)
+
+        # Left panel (camera feed)
+        left_panel = ttk.Frame(content)
+        left_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        # Camera container with border
+        camera_container = ttk.LabelFrame(left_panel, text="Камер")
+        camera_container.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+
+        # Camera feed
+        self.auth_canvas = tk.Canvas(camera_container, bg="black", width=640, height=480)
+        self.auth_canvas.pack(pady=10, padx=10)
+
+        # Camera controls
+        camera_controls = ttk.Frame(left_panel)
+        camera_controls.pack(pady=10, fill=tk.X)
+
+        self.auth_start_btn = ttk.Button(camera_controls, text="Баталгаажуулалт Эхлүүлэх", 
+                                        command=lambda: self.start_camera(canvas=self.auth_canvas, mode="authentication"),
+                                        style="Primary.TButton")
+        self.auth_start_btn.pack(side=tk.LEFT, padx=5)
+
+        self.auth_stop_btn = ttk.Button(camera_controls, text="Зогсоох", 
+                                        command=self.stop_camera, state=tk.DISABLED)
+        self.auth_stop_btn.pack(side=tk.LEFT, padx=5)
+
+        # Right panel (status and results)
+        right_panel = ttk.Frame(content)
+        right_panel.pack(side=tk.RIGHT, fill=tk.BOTH, padx=10, pady=10, expand=True)
+
+        # Progress indicator
+        progress_frame = ttk.LabelFrame(right_panel, text="Явц", padding=10)
+        progress_frame.pack(fill=tk.X, pady=(0, 10))
+
+        # QR status with icon
+        qr_frame = ttk.Frame(progress_frame)
+        qr_frame.pack(fill=tk.X, pady=5)
+
+        self.qr_status_icon = ttk.Label(qr_frame, text="⭕")  # Circle icon
+        self.qr_status_icon.pack(side=tk.LEFT, padx=(0, 10))
+
+        self.qr_status_label = ttk.Label(qr_frame, text="1: QR код уншуулна", style='Header.TLabel')
+        self.qr_status_label.pack(side=tk.LEFT)
+
+        # Face verification status with icon
+        face_frame = ttk.Frame(progress_frame)
+        face_frame.pack(fill=tk.X, pady=5)
+
+        self.face_status_icon = ttk.Label(face_frame, text="⭕")  # Circle icon
+        self.face_status_icon.pack(side=tk.LEFT, padx=(0, 10))
+
+        self.face_status_label = ttk.Label(face_frame, text="2: Царайны баталгаажуулалт (хүлээж байна)", style='Header.TLabel')
+        self.face_status_label.pack(side=tk.LEFT)
+
+        # Information panel
+        info_frame = ttk.LabelFrame(right_panel, text="Мэдээлэл", padding=10)
+        info_frame.pack(fill=tk.BOTH, expand=True)
+
+        # Weapon info
+        weapon_frame = ttk.Frame(info_frame)
+        weapon_frame.pack(fill=tk.X, pady=5)
+
+        ttk.Label(weapon_frame, text="Зэвсэг:", width=10).pack(side=tk.LEFT)
+        self.weapon_info_label = ttk.Label(weapon_frame, text="QR уншигдаагүй байна")
+        self.weapon_info_label.pack(side=tk.LEFT, padx=5)
+
+        # Personnel info
+        personnel_frame = ttk.Frame(info_frame)
+        personnel_frame.pack(fill=tk.X, pady=5)
+
+        ttk.Label(personnel_frame, text="Хүн:", width=10).pack(side=tk.LEFT)
+        self.personnel_info_label = ttk.Label(personnel_frame, text="")
+        self.personnel_info_label.pack(side=tk.LEFT, padx=5)
+
+        # Face result
+        face_result_frame = ttk.Frame(info_frame)
+        face_result_frame.pack(fill=tk.X, pady=5)
+
+        ttk.Label(face_result_frame, text="Итгэл:", width=10).pack(side=tk.LEFT)
+        self.face_result_label = ttk.Label(face_result_frame, text="")
+        self.face_result_label.pack(side=tk.LEFT, padx=5)
+
+        # Final result
+        result_frame = ttk.Frame(right_panel)
+        result_frame.pack(fill=tk.X, pady=10)
+
+        self.auth_result_label = ttk.Label(result_frame, text="", font=("Arial", 14, "bold"))
+        self.auth_result_label.pack(pady=10, fill=tk.X)
+
         # Reset button
-        self.auth_reset_btn = ttk.Button(right_panel, text="Reset", command=self.reset_authentication, state=tk.DISABLED)
+        self.auth_reset_btn = ttk.Button(right_panel, text="Дахин эхлүүлэх", 
+                                       command=self.reset_authentication, state=tk.DISABLED)
         self.auth_reset_btn.pack(pady=10, fill=tk.X)
     
     def setup_register_tab(self, parent):
-        """Setup the registration tab"""
+        """Setup the registration tab with improved styling"""
         frame = ttk.Frame(parent, padding="10")
         frame.pack(fill=tk.BOTH, expand=True)
         
+        # Create header for this tab
+        header = ttk.Frame(frame)
+        header.pack(fill=tk.X, pady=(0, 10))
+        
+        ttk.Label(header, text="Царайны Бүртгэл", style='Header.TLabel').pack(side=tk.LEFT)
+        
+        # Main content area
+        content = ttk.Frame(frame)
+        content.pack(fill=tk.BOTH, expand=True)
+        
         # Left panel (camera feed)
-        left_panel = ttk.Frame(frame)
+        left_panel = ttk.Frame(content)
         left_panel.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
         
+        # Camera container with border
+        camera_container = ttk.LabelFrame(left_panel, text="Камер")
+        camera_container.pack(fill=tk.BOTH, expand=True, padx=5, pady=5)
+        
         # Camera feed
-        self.register_canvas = tk.Canvas(left_panel, bg="black", width=640, height=480)
-        self.register_canvas.pack(pady=10)
+        self.register_canvas = tk.Canvas(camera_container, bg="black", width=640, height=480)
+        self.register_canvas.pack(pady=10, padx=10)
         
         # Camera controls
         camera_controls = ttk.Frame(left_panel)
-        camera_controls.pack(pady=10)
+        camera_controls.pack(pady=10, fill=tk.X)
         
-        self.reg_start_btn = ttk.Button(camera_controls, text="Start Camera", 
-                                      command=lambda: self.start_camera(canvas=self.register_canvas, mode="register"))
+        self.reg_start_btn = ttk.Button(camera_controls, text="Камер Асаах", 
+                                      command=lambda: self.start_camera(canvas=self.register_canvas, mode="register"),
+                                      style="Primary.TButton")
         self.reg_start_btn.pack(side=tk.LEFT, padx=5)
         
-        self.reg_stop_btn = ttk.Button(camera_controls, text="Stop Camera", 
+        self.reg_stop_btn = ttk.Button(camera_controls, text="Зогсоох", 
                                      command=self.stop_camera, state=tk.DISABLED)
         self.reg_stop_btn.pack(side=tk.LEFT, padx=5)
         
-        self.reg_capture_btn = ttk.Button(camera_controls, text="Capture", 
-                                        command=self.capture_registration_image, state=tk.DISABLED)
+        self.reg_capture_btn = ttk.Button(camera_controls, text="Зураг Авах", 
+                                        command=self.capture_registration_image, state=tk.DISABLED,
+                                        style="Success.TButton")
         self.reg_capture_btn.pack(side=tk.LEFT, padx=5)
         
         # Right panel (registration info)
-        right_panel = ttk.Frame(frame)
-        right_panel.pack(side=tk.RIGHT, fill=tk.BOTH, padx=10)
+        right_panel = ttk.Frame(content)
+        right_panel.pack(side=tk.RIGHT, fill=tk.BOTH, padx=10, pady=10, expand=True)
+        
+        # Registration form
+        form_frame = ttk.LabelFrame(right_panel, text="Бүртгэлийн мэдээлэл", padding=10)
+        form_frame.pack(fill=tk.X, pady=(0, 10))
         
         # Personnel ID input
-        reg_id_frame = ttk.Frame(right_panel)
+        reg_id_frame = ttk.Frame(form_frame)
         reg_id_frame.pack(fill=tk.X, pady=10)
         
         ttk.Label(reg_id_frame, text="Алба хаагчын дугаар:").pack(side=tk.LEFT)
         
         self.reg_id_var = tk.StringVar()
-        reg_id_entry = ttk.Entry(reg_id_frame, textvariable=self.reg_id_var)
+        reg_id_entry = ttk.Entry(reg_id_frame, textvariable=self.reg_id_var, width=20)
         reg_id_entry.pack(side=tk.LEFT, padx=5, fill=tk.X, expand=True)
         
+        # Preview image (if captured)
+        self.preview_frame = ttk.LabelFrame(right_panel, text="Урьдчилан харах", padding=10)
+        self.preview_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+        
+        self.preview_label = ttk.Label(self.preview_frame, text="Зураг авна уу")
+        self.preview_label.pack(pady=40, fill=tk.BOTH, expand=True)
+        
         # Registration status
-        status_frame = ttk.LabelFrame(right_panel, text="Бүртгэлийн төлөв", padding="10")
-        status_frame.pack(fill=tk.BOTH, expand=True, pady=10)
+        status_frame = ttk.LabelFrame(right_panel, text="Бүртгэлийн төлөв", padding=10)
+        status_frame.pack(fill=tk.X, pady=10)
         
         self.reg_status_label = ttk.Label(status_frame, text="Бүртгэгдээгүй", font=("Arial", 14))
         self.reg_status_label.pack(pady=10)
@@ -282,7 +641,9 @@ class FaceAuthClientApp:
         self.reg_info_label.pack(pady=5)
         
         # Register button
-        self.register_btn = ttk.Button(right_panel, text="Царай бүртгэх", command=self.register_face, state=tk.DISABLED)
+        self.register_btn = ttk.Button(right_panel, text="Царай Бүртгэх", 
+                                     command=self.register_face, state=tk.DISABLED,
+                                     style="Primary.TButton")
         self.register_btn.pack(pady=10, fill=tk.X)
     
     def setup_settings_tab(self, parent):
@@ -603,9 +964,186 @@ class FaceAuthClientApp:
         except Exception as e:
             messagebox.showerror("Camera Error", f"Error starting camera: {str(e)}")
             self.stop_camera()
+
+    def show_processing_overlay(self, message="Processing..."):
+        """Show a processing overlay on the currently active canvas"""
+        if hasattr(self, 'active_canvas') and self.active_canvas:
+            # Create a semi-transparent overlay
+            self.active_canvas.create_rectangle(0, 0, 
+                                             self.active_canvas.winfo_width(),
+                                             self.active_canvas.winfo_height(),
+                                             fill="black", stipple="gray50", tags="overlay")
+
+            # Add processing text
+            self.active_canvas.create_text(self.active_canvas.winfo_width() // 2,
+                                        self.active_canvas.winfo_height() // 2,
+                                        text=message,
+                                        font=("Arial", 24, "bold"),
+                                        fill="white", tags="overlay")
+
+            # Add spinning animation
+            self.spinner_angle = 0
+            self.update_spinner()
+
+    def update_spinner(self):
+        """Update the spinner animation"""
+        if hasattr(self, 'active_canvas') and self.active_canvas:
+            # Check if overlay still exists
+            if not self.active_canvas.find_withtag("overlay"):
+                return
+
+            # Clear previous spinner
+            self.active_canvas.delete("spinner")
+
+            # Calculate spinner position
+            cx = self.active_canvas.winfo_width() // 2
+            cy = (self.active_canvas.winfo_height() // 2) + 40
+            r = 20
+
+            # Draw spinner segments
+            for i in range(8):
+                angle = self.spinner_angle + (i * 45)
+                rad = angle * 3.14159 / 180
+                x1 = cx + int(r * 0.7 * math.cos(rad))
+                y1 = cy + int(r * 0.7 * math.sin(rad))
+                x2 = cx + int(r * math.cos(rad))
+                y2 = cy + int(r * math.sin(rad))
+
+                # Color fades based on position
+                color = f"#{255-i*30:02x}{255-i*30:02x}{255-i*30:02x}"
+
+                self.active_canvas.create_line(x1, y1, x2, y2, 
+                                           fill=color, width=4, 
+                                           tags="spinner")
+
+            # Update angle
+            self.spinner_angle = (self.spinner_angle + 10) % 360
+
+            # Schedule next update
+            self.root.after(50, self.update_spinner)
+
+    def hide_processing_overlay(self):
+        """Hide the processing overlay"""
+        if hasattr(self, 'active_canvas') and self.active_canvas:
+            self.active_canvas.delete("overlay")
+            self.active_canvas.delete("spinner")
+
+    def show_result_effect(self, success=True):
+        """Show an animated success or failure effect on the canvas"""
+        if hasattr(self, 'active_canvas') and self.active_canvas:
+            # Create a semi-transparent overlay
+            overlay_color = "#00ff00" if success else "#ff0000"
+            self.active_canvas.create_rectangle(0, 0, 
+                                             self.active_canvas.winfo_width(),
+                                             self.active_canvas.winfo_height(),
+                                             fill=overlay_color, stipple="gray25", tags="result_effect")
+
+            # Add result text
+            text = "SUCCESS" if success else "FAILED"
+            self.active_canvas.create_text(self.active_canvas.winfo_width() // 2,
+                                        self.active_canvas.winfo_height() // 2,
+                                        text=text,
+                                        font=("Arial", 36, "bold"),
+                                        fill="white", tags="result_effect")
+
+            # Schedule removal
+            self.root.after(1500, lambda: self.active_canvas.delete("result_effect"))
+
+    def setup_system_tray(self):
+        """Set up system tray icon and menu"""
+        try:
+            # Try to import required libraries
+            import pystray
+            from PIL import Image, ImageDraw
+
+            # Create system tray icon image
+            icon_size = 64
+            icon_image = Image.new('RGB', (icon_size, icon_size), color=(54, 66, 86))
+            draw = ImageDraw.Draw(icon_image)
+
+            # Draw a simple face outline
+            margin = 10
+            draw.ellipse([margin, margin, icon_size-margin, icon_size-margin], 
+                        fill=(255, 255, 255))
+            # Eyes
+            eye_margin = icon_size // 4
+            eye_size = icon_size // 10
+            draw.ellipse([eye_margin, eye_margin, eye_margin+eye_size, eye_margin+eye_size], 
+                        fill=(54, 66, 86))
+            draw.ellipse([icon_size-eye_margin-eye_size, eye_margin, 
+                         icon_size-eye_margin, eye_margin+eye_size], 
+                        fill=(54, 66, 86))
+
+            # Menu items
+            def show_window(icon, item):
+                self.root.deiconify()
+                self.root.lift()
+
+            def exit_app(icon, item):
+                icon.stop()
+                self.on_closing()
+
+            # Create menu
+            menu = (
+                pystray.MenuItem('Show', show_window),
+                pystray.MenuItem('Exit', exit_app)
+            )
+
+            # Create icon
+            self.tray_icon = pystray.Icon("faceauth", icon_image, "Face Auth Client", menu)
+
+            # Run in a separate thread
+            threading.Thread(target=self.tray_icon.run, daemon=True).start()
+
+            # Override close button to minimize to tray
+            self.root.protocol("WM_DELETE_WINDOW", self.minimize_to_tray)
+
+        except ImportError:
+            # Fall back to normal close behavior if pystray is not available
+            self.root.protocol("WM_DELETE_WINDOW", self.on_closing)
+            
+    def minimize_to_tray(self):
+        """Minimize application to system tray"""
+        self.root.withdraw()
+        # Optional: show notification
+        if hasattr(self, 'tray_icon'):
+            self.tray_icon.notify("Face Auth Client is still running in the background.")
+
+    def update_qr_status(self, scanned=False, message=None):
+        """Update QR status with visual indicator"""
+        if scanned:
+            self.qr_status_icon.config(text="✅")
+            self.qr_status_label.config(text="1: QR Код Уншигдлаа ✓", style="Success.TLabel")
+        else:
+            self.qr_status_icon.config(text="⭕")
+            if message:
+                self.qr_status_label.config(text=f"1: {message}", style="Header.TLabel")
+            else:
+                self.qr_status_label.config(text="1: QR код уншуулна", style="Header.TLabel")
+
+    def update_face_status(self, status, message=None):
+        """Update face verification status with visual indicator"""
+        if status == "success":
+            self.face_status_icon.config(text="✅")
+            self.face_status_label.config(text="2: Царайны Баталгаажуулалт Амжилттай ✓", style="Success.TLabel")
+        elif status == "error":
+            self.face_status_icon.config(text="❌")
+            self.face_status_label.config(text=f"2: Алдаа: {message}", style="Error.TLabel")
+        elif status == "waiting":
+            self.face_status_icon.config(text="⭕")
+            self.face_status_label.config(text="2: Царайны Баталгаажуулалт (хүлээж байна)", foreground="gray")
+        elif status == "processing":
+            self.face_status_icon.config(text="⏳")
+            self.face_status_label.config(text="2: Баталгаажуулж байна...", foreground="blue")
+        else:
+            self.face_status_icon.config(text="⭕")
+            if message:
+                self.face_status_label.config(text=f"2: {message}", style="Header.TLabel")
+            else:
+                self.face_status_label.config(text="2: Царайны Баталгаажуулалт", style="Header.TLabel")
     
     def update_camera(self):
-        """Update the camera feed on the canvas with automatic face detection"""
+        """Update the camera feed on the canvas with improved face detection visualization"""
         if self.is_capturing and self.cap and self.cap.isOpened():
             ret, frame = self.cap.read()
             if ret:
@@ -619,85 +1157,160 @@ class FaceAuthClientApp:
                         qr_codes = decode_qr(frame)
                         if qr_codes:
                             for qr in qr_codes:
-                                # Draw rectangle around QR code
+                                # Draw enhanced QR detection
                                 points = qr.polygon
                                 if len(points) > 4:
                                     hull = cv2.convexHull(
                                         np.array([(p.x, p.y) for p in points], dtype=np.int32))
-                                    cv2.polylines(frame, [hull], True, (0, 255, 0), 2)
+                                    cv2.polylines(frame, [hull], True, (0, 255, 0), 3)
+                                    # Add a highlight effect
+                                    overlay = frame.copy()
+                                    cv2.fillPoly(overlay, [hull], (0, 255, 0, 128))
+                                    cv2.addWeighted(overlay, 0.3, frame, 0.7, 0, frame)
                                 else:
-                                    cv2.polylines(
-                                        frame, 
-                                        [np.array([(p.x, p.y) for p in points], dtype=np.int32)], 
-                                        True, 
-                                        (0, 255, 0), 
-                                        2
-                                    )
+                                    points_array = np.array([(p.x, p.y) for p in points], dtype=np.int32)
+                                    cv2.polylines(frame, [points_array], True, (0, 255, 0), 3)
+                                    # Add a highlight effect
+                                    overlay = frame.copy()
+                                    cv2.fillPoly(overlay, [points_array], (0, 255, 0, 128))
+                                    cv2.addWeighted(overlay, 0.3, frame, 0.7, 0, frame)
+                                
+                                # Add a text label
+                                cv2.putText(frame, "QR Code Detected", (points[0].x, points[0].y - 10),
+                                            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
                                 
                                 # Process QR data
                                 self.qr_data = qr.data.decode('utf-8')
                                 self.qr_scanned = True
-                                self.qr_status_label.config(text="Step 1: QR Code Scanned ✓", foreground="green")
+                                self.update_qr_status(scanned=True)
                                 
                                 # Get weapon and personnel info from server
                                 self.get_weapon_and_personnel_info(self.qr_data)
-
+    
                     elif self.personnel_id and not hasattr(self, 'verification_in_progress') and not self.transaction_completed:
                         # Initialize frame counter if not exists
                         if not hasattr(self, 'frame_counter'):
                             self.frame_counter = 0
                         self.frame_counter += 1
-
+    
                         # Only run face detection every 2nd frame for efficiency
                         if self.frame_counter % 2 == 0:
                             # Create a smaller version of the frame for faster processing
                             frame_small = cv2.resize(frame, (0, 0), fx=0.5, fy=0.5)
-
+    
                             # Convert to grayscale for face detection
                             gray = cv2.cvtColor(frame_small, cv2.COLOR_BGR2GRAY)
-
+    
                             # Use a face cascade classifier
                             face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
                             faces = face_cascade.detectMultiScale(gray, 1.3, 5)
-
+    
                             # Scale coordinates back up and draw rectangles around the faces
                             for (x, y, w, h) in faces:
                                 # Scale coordinates back to original size
                                 x2, y2, w2, h2 = int(x*2), int(y*2), int(w*2), int(h*2)
-                                cv2.rectangle(frame, (x2, y2), (x2+w2, y2+h2), (0, 255, 0), 2)
-
+                                
+                                # Draw a nice looking rectangle
+                                cv2.rectangle(frame, (x2, y2), (x2+w2, y2+h2), (0, 255, 255), 2)
+                                
+                                # Draw corner markers for visual appeal
+                                marker_length = 20
+                                # Top left
+                                cv2.line(frame, (x2, y2), (x2 + marker_length, y2), (0, 255, 255), 3)
+                                cv2.line(frame, (x2, y2), (x2, y2 + marker_length), (0, 255, 255), 3)
+                                # Top right
+                                cv2.line(frame, (x2 + w2, y2), (x2 + w2 - marker_length, y2), (0, 255, 255), 3)
+                                cv2.line(frame, (x2 + w2, y2), (x2 + w2, y2 + marker_length), (0, 255, 255), 3)
+                                # Bottom left
+                                cv2.line(frame, (x2, y2 + h2), (x2 + marker_length, y2 + h2), (0, 255, 255), 3)
+                                cv2.line(frame, (x2, y2 + h2), (x2, y2 + h2 - marker_length), (0, 255, 255), 3)
+                                # Bottom right
+                                cv2.line(frame, (x2 + w2, y2 + h2), (x2 + w2 - marker_length, y2 + h2), (0, 255, 255), 3)
+                                cv2.line(frame, (x2 + w2, y2 + h2), (x2 + w2, y2 + h2 - marker_length), (0, 255, 255), 3)
+    
                             # If we detect exactly one face that's large enough (close to camera)
-                            if len(faces) == 1 and faces[0][2] > 50 and faces[0][3] > 50: # Reduced size threshold for small frame
+                            if len(faces) == 1 and faces[0][2] > 50 and faces[0][3] > 50:
                                 # Draw a thicker rectangle to indicate "ready to capture"
                                 (x, y, w, h) = faces[0]
                                 # Scale coordinates back to original size
                                 x2, y2, w2, h2 = int(x*2), int(y*2), int(w*2), int(h*2)
-                                cv2.rectangle(frame, (x2, y2), (x2+w2, y2+h2), (0, 255, 0), 4)
-
+                                
+                                # Draw a nice looking rectangle
+                                cv2.rectangle(frame, (x2, y2), (x2+w2, y2+h2), (0, 255, 0), 3)
+                                
+                                # Draw corner markers for visual appeal
+                                marker_length = 20
+                                # Top left
+                                cv2.line(frame, (x2, y2), (x2 + marker_length, y2), (0, 255, 0), 4)
+                                cv2.line(frame, (x2, y2), (x2, y2 + marker_length), (0, 255, 0), 4)
+                                # Top right
+                                cv2.line(frame, (x2 + w2, y2), (x2 + w2 - marker_length, y2), (0, 255, 0), 4)
+                                cv2.line(frame, (x2 + w2, y2), (x2 + w2, y2 + marker_length), (0, 255, 0), 4)
+                                # Bottom left
+                                cv2.line(frame, (x2, y2 + h2), (x2 + marker_length, y2 + h2), (0, 255, 0), 4)
+                                cv2.line(frame, (x2, y2 + h2), (x2, y2 + h2 - marker_length), (0, 255, 0), 4)
+                                # Bottom right
+                                cv2.line(frame, (x2 + w2, y2 + h2), (x2 + w2 - marker_length, y2 + h2), (0, 255, 0), 4)
+                                cv2.line(frame, (x2 + w2, y2 + h2), (x2 + w2, y2 + h2 - marker_length), (0, 255, 0), 4)
+                                
+                                # Add text below the face
+                                cv2.putText(frame, "Face Detected", (x2, y2 + h2 + 25),
+                                            cv2.FONT_HERSHEY_SIMPLEX, 0.8, (0, 255, 0), 2)
+    
                                 # Count frames with a face detected (for stability)
                                 if not hasattr(self, 'face_detection_counter'):
                                     self.face_detection_counter = 0
                                 self.face_detection_counter += 1
-
+    
                                 # After detecting a stable face for multiple frames, auto-capture
-                                # Reduced from 10 to 3 frames for faster triggering
                                 if self.face_detection_counter > 3:
                                     # Set a flag to prevent multiple simultaneous verifications
                                     self.verification_in_progress = True
-
+    
                                     # Auto-capture and verify
                                     self.captured_frame = self.current_frame.copy()
-                                    self.face_status_label.config(text="Face detected! Verifying...", foreground="blue")
-
-                                    # Proceed to verification (run in a seperate thread)
+                                    self.update_face_status("processing", "Баталгаажуулж байна...")
+    
+                                    # Proceed to verification (run in a separate thread)
                                     threading.Thread(
                                         target=self.run_face_verification,
                                         daemon=True
                                     ).start()
+                                    
+                                    # Add a capture effect
+                                    cv2.rectangle(frame, (0, 0), (frame.shape[1], frame.shape[0]), (0, 255, 0), 10)
                             else:
                                 # Reset counter if no face or multiple faces
                                 if hasattr(self, 'face_detection_counter'):
                                     self.face_detection_counter = 0
+            
+                elif hasattr(self, 'current_mode') and self.current_mode == "register":
+                    # For registration mode, also show face detection
+                    face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+                    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+                    faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+
+                    for (x, y, w, h) in faces:
+                        # Draw a rectangle with a 3D effect
+                        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 255), 2)
+
+                        # Draw corner markers
+                        marker_length = 20
+                        # Top left
+                        cv2.line(frame, (x, y), (x + marker_length, y), (0, 255, 255), 3)
+                        cv2.line(frame, (x, y), (x, y + marker_length), (0, 255, 255), 3)
+                        # Top right
+                        cv2.line(frame, (x + w, y), (x + w - marker_length, y), (0, 255, 255), 3)
+                        cv2.line(frame, (x + w, y), (x + w, y + marker_length), (0, 255, 255), 3)
+                        # Bottom left
+                        cv2.line(frame, (x, y + h), (x + marker_length, y + h), (0, 255, 255), 3)
+                        cv2.line(frame, (x, y + h), (x, y + h - marker_length), (0, 255, 255), 3)
+                        # Bottom right
+                        cv2.line(frame, (x + w, y + h), (x + w - marker_length, y + h), (0, 255, 255), 3)
+                        cv2.line(frame, (x + w, y + h), (x + w, y + h - marker_length), (0, 255, 255), 3)
+
+                        # Label
+                        cv2.putText(frame, "Face Detected", (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 255, 255), 2)
 
                 # Convert to RGB for tkinter and update canvas
                 frame_rgb = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -705,11 +1318,11 @@ class FaceAuthClientApp:
                 # Convert to PhotoImage format
                 self.current_image = Image.fromarray(frame_rgb)
                 photo = ImageTk.PhotoImage(image=self.current_image)
-                
+
                 # Update canvas
                 self.active_canvas.create_image(0, 0, image=photo, anchor=tk.NW)
                 self.active_canvas.photo = photo
-            
+        
             # Schedule the next update
             self.root.after(10, self.update_camera)
     
@@ -946,13 +1559,25 @@ class FaceAuthClientApp:
         self.status_label.config(text="Authentication reset")
     
     def capture_registration_image(self):
-        """Capture image for registration"""
+        """Capture image for registration with preview"""
         if not hasattr(self, 'current_frame') or self.current_frame is None:
             messagebox.showerror("Error", "No frame to capture")
             return
-        
+
         # Store captured frame
         self.captured_frame = self.current_frame.copy()
+
+        # Display preview
+        preview_img = cv2.resize(self.captured_frame, (200, 150))
+        preview_rgb = cv2.cvtColor(preview_img, cv2.COLOR_BGR2RGB)
+        preview_image = Image.fromarray(preview_rgb)
+        preview_photo = ImageTk.PhotoImage(image=preview_image)
+
+        # Update preview
+        if hasattr(self, 'preview_label'):
+            self.preview_label.config(image=preview_photo)
+            self.preview_label.image = preview_photo  # Keep a reference
+
         self.status_label.config(text="Image captured for registration")
         self.register_btn.config(state=tk.NORMAL)
     
@@ -1238,6 +1863,203 @@ class FaceAuthClientApp:
         self.stop_camera()
         self.root.destroy()
 
+    def setup_language_selector(self):
+        """Set up language selector in settings tab"""
+        language_frame = ttk.LabelFrame(self.settings_tab, text="Language Settings")
+        language_frame.pack(fill=tk.X, pady=10, padx=10)
+
+        self.language_var = tk.StringVar(value="mn")  # Default is Mongolian
+
+        # Language options
+        ttk.Radiobutton(language_frame, text="Монгол", variable=self.language_var, 
+                       value="mn", command=self.update_language).grid(row=0, column=0, padx=5, pady=5)
+        ttk.Radiobutton(language_frame, text="English", variable=self.language_var, 
+                       value="en", command=self.update_language).grid(row=0, column=1, padx=5, pady=5)
+
+    def update_language(self):
+        """Update UI language based on selection"""
+        lang = self.language_var.get()
+
+        # Define translations
+        translations = {
+            "mn": {
+                "title": "Галт зэвсгийн оролт, гаралтын бүртгэл",
+                "auth_tab": "Баталгаажуулалт",
+                "register_tab": "Царайны бүртгэл",
+                "settings_tab": "Тохиргоо",
+                "start_auth": "Баталгаажуулалт Эхлүүлэх",
+                "stop": "Зогсоох",
+                "mode": "Горим:",
+                "auto_mode": "Автомат (Илрүүлж байна...)",
+                "step1": "1: QR код уншуулна",
+                "step2": "2: Царайны баталгаажуулалт (хүлээж байна)",
+                "no_weapon": "QR уншигдаагүй байна",
+                "weapon": "Зэвсэг:",
+                "person": "Хүн:",
+                "confidence": "Итгэл:",
+                "reset": "Дахин эхлүүлэх",
+                # ... add more translations as needed
+            },
+            "en": {
+                "title": "Weapon Check-in/Check-out System",
+                "auth_tab": "Authentication",
+                "register_tab": "Face Registration",
+                "settings_tab": "Settings",
+                "start_auth": "Start Authentication",
+                "stop": "Stop",
+                "mode": "Mode:",
+                "auto_mode": "Auto (Detecting...)",
+                "step1": "1: Scan QR Code",
+                "step2": "2: Face Verification (waiting)",
+                "no_weapon": "No weapon scanned",
+                "weapon": "Weapon:",
+                "person": "Person:",
+                "confidence": "Confidence:",
+                "reset": "Reset",
+                # ... add more translations as needed
+            }
+        }
+
+        # Update UI elements with selected language
+        t = translations.get(lang, translations["en"])  # Fallback to English
+
+        # Update window title
+        self.root.title(t["title"])
+
+        # Update tab names
+        if hasattr(self, 'tab_control'):
+            self.tab_control.tab(0, text=t["auth_tab"])
+            self.tab_control.tab(1, text=t["register_tab"])
+            self.tab_control.tab(2, text=t["settings_tab"])
+
+        # Update buttons
+        if hasattr(self, 'auth_start_btn'):
+            self.auth_start_btn.config(text=t["start_auth"])
+        if hasattr(self, 'auth_stop_btn'):
+            self.auth_stop_btn.config(text=t["stop"])
+
+        # Continue updating other UI elements...
+        # This is just a starting example
+    def setup_appearance_selector(self):
+        """Set up appearance/theme selector in settings tab"""
+        appearance_frame = ttk.LabelFrame(self.settings_tab, text="Appearance")
+        appearance_frame.pack(fill=tk.X, pady=10, padx=10)
+
+        self.theme_var = tk.StringVar(value="light")  # Default is light mode
+
+        # Theme options
+        ttk.Radiobutton(appearance_frame, text="Light Mode", variable=self.theme_var, 
+                       value="light", command=self.update_theme).grid(row=0, column=0, padx=5, pady=5)
+        ttk.Radiobutton(appearance_frame, text="Dark Mode", variable=self.theme_var, 
+                       value="dark", command=self.update_theme).grid(row=0, column=1, padx=5, pady=5)
+
+    def update_theme(self):
+        """Update application theme based on selection"""
+        theme = self.theme_var.get()
+
+        if theme == "dark":
+            # Dark theme colors
+            bg_color = "#333333"
+            fg_color = "#ffffff"
+            accent_color = "#007acc"
+            success_color = "#5cb85c"
+            error_color = "#d9534f"
+            warning_color = "#f0ad4e"
+
+            # Update canvas backgrounds
+            if hasattr(self, 'auth_canvas'):
+                self.auth_canvas.config(bg="#1e1e1e")
+            if hasattr(self, 'register_canvas'):
+                self.register_canvas.config(bg="#1e1e1e")
+
+            # Update window background
+            self.root.configure(background=bg_color)
+
+            # Try to configure ttk styles for dark mode
+            try:
+                self.style.configure('TFrame', background=bg_color)
+                self.style.configure('TLabel', background=bg_color, foreground=fg_color)
+                self.style.configure('TButton', background=accent_color)
+                self.style.configure('TNotebook', background=bg_color, foreground=fg_color)
+
+                # Configure special styles
+                self.style.configure('Title.TLabel', background=bg_color, foreground=fg_color)
+                self.style.configure('Header.TLabel', background=bg_color, foreground=fg_color)
+                self.style.configure('Success.TLabel', foreground=success_color)
+                self.style.configure('Error.TLabel', foreground=error_color)
+                self.style.configure('Warning.TLabel', foreground=warning_color)
+
+                # Custom button styles for dark mode
+                self.style.configure('Primary.TButton', background=accent_color)
+                self.style.configure('Success.TButton', background=success_color)
+                self.style.configure('Danger.TButton', background=error_color)
+
+            except Exception as e:
+                print(f"Error configuring dark theme: {e}")
+
+        else:
+            # Light theme (default) colors
+            bg_color = "#f5f5f5"
+            fg_color = "#000000"
+            accent_color = "#3a7ebf"
+            success_color = "#5cb85c"
+            error_color = "#d9534f"
+            warning_color = "#f0ad4e"
+
+            # Update canvas backgrounds
+            if hasattr(self, 'auth_canvas'):
+                self.auth_canvas.config(bg="black")
+            if hasattr(self, 'register_canvas'):
+                self.register_canvas.config(bg="black")
+
+            # Update window background
+            self.root.configure(background=bg_color)
+
+            # Try to configure ttk styles for light mode
+            try:
+                self.style.configure('TFrame', background=bg_color)
+                self.style.configure('TLabel', background=bg_color, foreground=fg_color)
+                self.style.configure('TButton', background=accent_color)
+                self.style.configure('TNotebook', background=bg_color, foreground=fg_color)
+
+                # Configure special styles
+                self.style.configure('Title.TLabel', background=bg_color, foreground=fg_color)
+                self.style.configure('Header.TLabel', background=bg_color, foreground=fg_color)
+                self.style.configure('Success.TLabel', foreground=success_color)
+                self.style.configure('Error.TLabel', foreground=error_color)
+                self.style.configure('Warning.TLabel', foreground=warning_color)
+
+                # Custom button styles for light mode
+                self.style.configure('Primary.TButton', background=accent_color)
+                self.style.configure('Success.TButton', background=success_color)
+                self.style.configure('Danger.TButton', background=error_color)
+
+            except Exception as e:
+                print(f"Error configuring light theme: {e}")
+
+    def create_progress_bar(self, parent, initial_text="Ready"):
+        """Create a progress bar with text label"""
+        frame = ttk.Frame(parent)
+        
+        self.progress_var = tk.DoubleVar(value=0.0)
+        self.progress_bar = ttk.Progressbar(frame, variable=self.progress_var, length=300)
+        self.progress_bar.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 10))
+        
+        self.progress_label = ttk.Label(frame, text=initial_text)
+        self.progress_label.pack(side=tk.RIGHT)
+        
+        return frame
+    
+    def update_progress(self, value=0, text=None):
+        """Update progress bar value and text"""
+        if hasattr(self, 'progress_var'):
+            self.progress_var.set(value)
+        
+        if text and hasattr(self, 'progress_label'):
+            self.progress_label.config(text=text)
+            
+        # Process pending events to show updates
+        self.root.update_idletasks()
 
 if __name__ == "__main__":
     # Create and run the application
@@ -1245,3 +2067,37 @@ if __name__ == "__main__":
     app = FaceAuthClientApp(root)
     root.protocol("WM_DELETE_WINDOW", app.on_closing)
     root.mainloop()
+
+class ToolTip:
+    """Create a tooltip for a given widget"""
+    def __init__(self, widget, text):
+        self.widget = widget
+        self.text = text
+        self.tooltip = None
+        self.widget.bind("<Enter>", self.show_tooltip)
+        self.widget.bind("<Leave>", self.hide_tooltip)
+        
+    def show_tooltip(self, event=None):
+        # Get widget position
+        x, y, _, _ = self.widget.bbox("insert")
+        x += self.widget.winfo_rootx() + 25
+        y += self.widget.winfo_rooty() + 25
+        
+        # Create tooltip window
+        self.tooltip = tk.Toplevel(self.widget)
+        self.tooltip.wm_overrideredirect(True)
+        self.tooltip.wm_geometry(f"+{x}+{y}")
+        
+        # Create tooltip content
+        frame = ttk.Frame(self.tooltip, borderwidth=1, relief="solid")
+        frame.pack(fill=tk.BOTH, expand=True)
+        
+        label = ttk.Label(frame, text=self.text, wraplength=250,
+                         justify="left", background="#ffffe0", 
+                         relief="solid", borderwidth=0)
+        label.pack(fill=tk.BOTH, expand=True, padx=4, pady=2)
+        
+    def hide_tooltip(self, event=None):
+        if self.tooltip:
+            self.tooltip.destroy()
+            self.tooltip = None
